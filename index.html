@@ -184,7 +184,7 @@
     }
 
     .pill-meta b {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       color: var(--text-main);
     }
@@ -403,9 +403,7 @@
       text-align: center;
     }
 
-    /* ========================================================
-       PROFESSIONAL FOOTER & OWNER BRANDING
-       ======================================================== */
+    /* FOOTER */
     footer {
       background: #0f172a;
       color: #94a3b8;
@@ -451,7 +449,6 @@
       font-weight: 800;
     }
 
-    /* Social Icons Styling */
     .social-links {
       display: flex;
       gap: 14px;
@@ -563,7 +560,7 @@
       border-top-left-radius: 26px;
       border-top-right-radius: 26px;
       padding: 24px 20px 32px;
-      max-height: 88vh;
+      max-height: 90vh;
       overflow-y: auto;
     }
 
@@ -610,8 +607,8 @@
     }
 
     .invoice-item-row.delivery-row {
-      color: var(--veg-green);
       font-weight: 700;
+      color: var(--text-main);
     }
 
     .invoice-item-row.grand-total {
@@ -636,7 +633,7 @@
       text-transform: uppercase;
     }
 
-    .input-field input, .input-field textarea {
+    .input-field input, .input-field textarea, .input-field select {
       width: 100%;
       padding: 13px 15px;
       border: 1.5px solid var(--border-subtle);
@@ -644,6 +641,11 @@
       font-size: 14px;
       font-weight: 600;
       outline: none;
+      background: #ffffff;
+    }
+
+    .input-field select {
+      cursor: pointer;
     }
 
     .btn-submit-order {
@@ -676,7 +678,7 @@
     </div>
   </section>
 
-  <!-- STORE STATS -->
+  <!-- STORE STATS (UPDATED: WITHIN 1 KM FREE) -->
   <div class="store-highlights-wrapper">
     <div class="store-highlights">
       <div class="highlight-pill">
@@ -699,7 +701,7 @@
         <div class="pill-icon">🛵</div>
         <div class="pill-meta">
           <span>Charges</span>
-          <b>Free Delivery</b>
+          <b>Within 1 km Free</b>
         </div>
       </div>
     </div>
@@ -727,22 +729,18 @@
     <div class="footer-content">
       <div class="footer-brand">Triple S Cafe</div>
       
-      <!-- Owner Tag -->
       <div class="owner-badge">
-        <span>👨‍🍳 Owned & Managed by:</span>
+        <span>👨‍‍🍳 Owned & Managed by:</span>
         <b>Shubham</b>
       </div>
 
-      <!-- Social Media Buttons -->
       <div class="social-links">
-        <!-- Instagram Link -->
         <a href="https://instagram.com" target="_blank" class="social-icon-btn instagram" title="Follow us on Instagram">
           <svg viewBox="0 0 24 24">
             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
           </svg>
         </a>
 
-        <!-- Facebook Link -->
         <a href="https://facebook.com" target="_blank" class="social-icon-btn facebook" title="Find us on Facebook">
           <svg viewBox="0 0 24 24">
             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -752,7 +750,6 @@
 
       <div class="footer-divider"></div>
 
-      <!-- Copyright & Disclaimer -->
       <div class="footer-bottom-text">
         <p>© 2026 <b>Triple S Cafe</b>. All Rights Reserved.</p>
         <p style="margin-top: 4px; opacity: 0.7;">Made with 100% fresh ingredients & hygiene standards.</p>
@@ -764,7 +761,7 @@
   <aside class="cart-float-bar" id="cartFloatBar" style="display: none;" onclick="openCheckoutModal()">
     <div class="cart-lead-text">
       <b id="cartLeadTotal">0 ITEMS | ₹0</b>
-      <p>Free Doorstep Delivery • Tap to Review Order</p>
+      <p>Delivery calculated by distance • Tap to Review</p>
     </div>
     <div class="cart-cta-chip">
       View Cart ➔
@@ -779,11 +776,12 @@
         <button class="sheet-close-btn" onclick="closeCheckoutModal()">✕</button>
       </div>
 
+      <!-- INVOICE WITH LIVE DISTANCE CALCULATION -->
       <div class="invoice-card">
         <div id="invoiceItemsListing"></div>
         <div class="invoice-item-row delivery-row" style="margin-top: 8px;">
-          <span>Delivery Partner Fee</span>
-          <span>FREE</span>
+          <span>Delivery Charge (<span id="deliveryDistanceLabel">Within 1 km</span>)</span>
+          <span id="deliveryChargeText" style="color: var(--veg-green);">FREE</span>
         </div>
         <div class="invoice-item-row grand-total">
           <span>Grand Total</span>
@@ -793,7 +791,9 @@
 
       <form id="orderForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
         <input type="hidden" name="Order_Details" id="hiddenOrderDetails">
-        <input type="hidden" name="Total_Amount" id="hiddenTotalAmount">
+        <input type="hidden" name="Delivery_Distance" id="hiddenDistance">
+        <input type="hidden" name="Delivery_Fee" id="hiddenDeliveryFee">
+        <input type="hidden" name="Grand_Total" id="hiddenTotalAmount">
 
         <div class="input-field">
           <label>Customer Full Name</label>
@@ -803,6 +803,18 @@
         <div class="input-field">
           <label>Phone Number</label>
           <input type="tel" name="Customer_Phone" required placeholder="10-digit mobile number">
+        </div>
+
+        <!-- NEW: KM SELECTION -->
+        <div class="input-field">
+          <label>Select Delivery Distance from Cafe</label>
+          <select id="distanceSelect" onchange="updateDeliveryCalculation()">
+            <option value="0" data-label="Within 1 km">Within 1 km (FREE Delivery)</option>
+            <option value="15" data-label="1 to 2 km">1 to 2 km (+₹15 Delivery Charge)</option>
+            <option value="25" data-label="2 to 3 km">2 to 3 km (+₹25 Delivery Charge)</option>
+            <option value="35" data-label="3 to 4 km">3 to 4 km (+₹35 Delivery Charge)</option>
+            <option value="45" data-label="4 to 5 km">4 to 5 km (+₹45 Delivery Charge)</option>
+          </select>
         </div>
 
         <div class="input-field">
@@ -971,10 +983,43 @@
       }
     }
 
+    function getItemsTotal() {
+      let total = 0;
+      for (const id in userCart) {
+        const item = foodDatabase.find(i => i.id == id);
+        total += item.price * userCart[id];
+      }
+      return total;
+    }
+
+    function updateDeliveryCalculation() {
+      const select = document.getElementById('distanceSelect');
+      const deliveryCharge = parseInt(select.value, 10);
+      const selectedOption = select.options[select.selectedIndex];
+      const distanceLabel = selectedOption.getAttribute('data-label');
+
+      document.getElementById('deliveryDistanceLabel').innerText = distanceLabel;
+
+      if (deliveryCharge === 0) {
+        document.getElementById('deliveryChargeText').innerText = "FREE";
+        document.getElementById('deliveryChargeText').style.color = "var(--veg-green)";
+      } else {
+        document.getElementById('deliveryChargeText').innerText = `+₹${deliveryCharge}`;
+        document.getElementById('deliveryChargeText').style.color = "var(--text-main)";
+      }
+
+      const itemsTotal = getItemsTotal();
+      const finalTotal = itemsTotal + deliveryCharge;
+
+      document.getElementById('grandTotalText').innerText = "₹" + finalTotal;
+      document.getElementById('hiddenDistance').value = distanceLabel;
+      document.getElementById('hiddenDeliveryFee').value = deliveryCharge === 0 ? "FREE" : `₹${deliveryCharge}`;
+      document.getElementById('hiddenTotalAmount').value = "₹" + finalTotal;
+    }
+
     function openCheckoutModal() {
       let summaryRows = "";
       let orderItemsString = "";
-      let totalAmount = 0;
 
       for (const id in userCart) {
         const item = foodDatabase.find(i => i.id == id);
@@ -986,13 +1031,14 @@
           </div>
         `;
         orderItemsString += `${item.name} (${userCart[id]}x), `;
-        totalAmount += subtotal;
       }
 
       document.getElementById('invoiceItemsListing').innerHTML = summaryRows;
-      document.getElementById('grandTotalText').innerText = "₹" + totalAmount;
       document.getElementById('hiddenOrderDetails').value = orderItemsString;
-      document.getElementById('hiddenTotalAmount').value = "₹" + totalAmount;
+
+      // Reset distance selection to 0 (Within 1 km)
+      document.getElementById('distanceSelect').value = "0";
+      updateDeliveryCalculation();
 
       document.getElementById('checkoutBackdrop').style.display = 'flex';
     }
