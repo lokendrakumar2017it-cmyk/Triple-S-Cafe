@@ -47,7 +47,7 @@
       background: linear-gradient(180deg, #090d16 0%, #111827 70%, #1e293b 100%);
       position: relative;
       overflow: hidden;
-      padding: 40px 20px 32px;
+      padding: 38px 18px 30px;
       color: #ffffff;
       text-align: center;
       border-bottom-left-radius: 28px;
@@ -85,7 +85,7 @@
       padding: 4px;
       background: var(--gold-gradient);
       box-shadow: 0 10px 30px rgba(255, 183, 3, 0.35), 0 0 0 6px rgba(255, 255, 255, 0.1);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -126,6 +126,7 @@
       align-items: center;
       gap: 6px;
       letter-spacing: 0.5px;
+      margin-bottom: 14px;
     }
 
     .live-pulse {
@@ -137,10 +138,27 @@
       display: inline-block;
     }
 
+    /* CAUTION / MINIMUM ORDER NOTICE BADGE */
+    .min-order-caution {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 183, 3, 0.15);
+      border: 1.5px solid rgba(255, 183, 3, 0.6);
+      color: #ffd166;
+      padding: 7px 16px;
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      box-shadow: 0 4px 14px rgba(255, 183, 3, 0.15);
+      backdrop-filter: blur(4px);
+    }
+
     /* STORE STATS HIGHLIGHTS */
     .store-highlights-wrapper {
       max-width: 680px;
-      margin: -24px auto 0;
+      margin: -22px auto 0;
       padding: 0 16px;
       position: relative;
       z-index: 10;
@@ -543,7 +561,7 @@
 
     .cart-lead-text p {
       font-size: 12px;
-      opacity: 0.9;
+      opacity: 0.95;
     }
 
     .cart-cta-chip {
@@ -582,7 +600,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--border-subtle);
     }
@@ -601,6 +619,21 @@
       border-radius: 50%;
       font-size: 16px;
       cursor: pointer;
+    }
+
+    /* Validation Prompt Alert Inside Modal */
+    .modal-min-order-alert {
+      background: #fef2f2;
+      border: 1.5px solid #fecaca;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #b91c1c;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: none;
+      align-items: center;
+      gap: 8px;
     }
 
     .invoice-card {
@@ -656,10 +689,19 @@
       font-weight: 600;
       outline: none;
       background: #ffffff;
+      transition: border-color 0.15s;
     }
 
-    .input-field select {
-      cursor: pointer;
+    .input-field input:focus, .input-field textarea:focus, .input-field select:focus {
+      border-color: var(--primary);
+    }
+
+    .input-hint-error {
+      color: #dc2626;
+      font-size: 11.5px;
+      font-weight: 700;
+      margin-top: 4px;
+      display: none;
     }
 
     .btn-submit-order {
@@ -673,10 +715,17 @@
       font-weight: 800;
       cursor: pointer;
       box-shadow: var(--float-shadow);
-      transition: transform 0.15s;
+      transition: transform 0.15s, opacity 0.2s;
     }
 
-    .btn-submit-order:active {
+    .btn-submit-order:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      box-shadow: none;
+      opacity: 0.8;
+    }
+
+    .btn-submit-order:active:not(:disabled) {
       transform: scale(0.98);
     }
 
@@ -795,6 +844,12 @@
         <span class="live-pulse"></span>
         <span>Hot & Fresh Fast Food • Doorstep Delivery</span>
       </div>
+
+      <!-- Attention Grabbing Minimum Order Caution Badge -->
+      <div class="min-order-caution">
+        <span>⚠️</span>
+        <span>Note: Minimum order value is ₹200 for delivery</span>
+      </div>
     </div>
   </section>
 
@@ -881,9 +936,9 @@
   <aside class="cart-float-bar" id="cartFloatBar" style="display: none;" onclick="openCheckoutModal()">
     <div class="cart-lead-text">
       <b id="cartLeadTotal">0 ITEMS | ₹0</b>
-      <p>Delivery calculated by distance • Tap to Review</p>
+      <p id="cartLeadSubtitle">Delivery calculated by distance • Tap to Review</p>
     </div>
-    <div class="cart-cta-chip">
+    <div class="cart-cta-chip" id="cartCtaBtn">
       View Cart ➔
     </div>
   </aside>
@@ -894,6 +949,12 @@
       <div class="sheet-title-row">
         <h3>Order Invoice</h3>
         <button class="sheet-close-btn" onclick="closeCheckoutModal()">✕</button>
+      </div>
+
+      <!-- Minimum order warning prompt in checkout modal -->
+      <div class="modal-min-order-alert" id="modalMinOrderAlert">
+        <span>⚠️</span>
+        <span id="modalMinOrderAlertText">Minimum order value is ₹200. Please add more items.</span>
       </div>
 
       <div class="invoice-card">
@@ -915,8 +976,9 @@
         </div>
 
         <div class="input-field">
-          <label>Phone Number</label>
-          <input type="tel" id="custPhone" required placeholder="10-digit mobile number">
+          <label>Phone Number (10 Digits)</label>
+          <input type="tel" id="custPhone" maxlength="10" required placeholder="e.g. 9876543210" oninput="validatePhoneLive()">
+          <div class="input-hint-error" id="phoneErrorHint">Please enter a valid 10-digit mobile number (starting with 6, 7, 8, or 9).</div>
         </div>
 
         <!-- KM SELECTION -->
@@ -963,6 +1025,10 @@
           <b id="popupCustName">Guest</b>
         </div>
         <div class="meta-line">
+          <span>Phone:</span>
+          <b id="popupCustPhone">0000000000</b>
+        </div>
+        <div class="meta-line">
           <span>Total Amount:</span>
           <b id="popupTotalAmount" style="color: var(--primary);">₹0</b>
         </div>
@@ -977,6 +1043,8 @@
   </div>
 
   <script>
+    const MINIMUM_ORDER_VALUE = 200;
+
     const foodDatabase = [
       { 
         id: 1, 
@@ -1145,25 +1213,6 @@
       renderMenuCatalog(getFilteredList());
     }
 
-    function refreshCartBar() {
-      let count = 0;
-      let bill = 0;
-
-      for (const id in userCart) {
-        const dish = foodDatabase.find(i => i.id == id);
-        count += userCart[id];
-        bill += dish.price * userCart[id];
-      }
-
-      const bar = document.getElementById('cartFloatBar');
-      if (count > 0) {
-        bar.style.display = 'flex';
-        document.getElementById('cartLeadTotal').innerText = `${count} ITEM${count > 1 ? 'S' : ''} | ₹${bill}`;
-      } else {
-        bar.style.display = 'none';
-      }
-    }
-
     function getItemsTotal() {
       let total = 0;
       for (const id in userCart) {
@@ -1171,6 +1220,32 @@
         total += item.price * userCart[id];
       }
       return total;
+    }
+
+    function refreshCartBar() {
+      let count = 0;
+      let bill = getItemsTotal();
+
+      for (const id in userCart) {
+        count += userCart[id];
+      }
+
+      const bar = document.getElementById('cartFloatBar');
+      if (count > 0) {
+        bar.style.display = 'flex';
+        document.getElementById('cartLeadTotal').innerText = `${count} ITEM${count > 1 ? 'S' : ''} | ₹${bill}`;
+
+        if (bill < MINIMUM_ORDER_VALUE) {
+          const diff = MINIMUM_ORDER_VALUE - bill;
+          document.getElementById('cartLeadSubtitle').innerText = `⚠️ Add ₹${diff} more to reach min order (₹${MINIMUM_ORDER_VALUE})`;
+          document.getElementById('cartCtaBtn').innerText = `Add ₹${diff} ➔`;
+        } else {
+          document.getElementById('cartLeadSubtitle').innerText = `Free delivery within 1 km • Tap to Checkout`;
+          document.getElementById('cartCtaBtn').innerText = `View Cart ➔`;
+        }
+      } else {
+        bar.style.display = 'none';
+      }
     }
 
     function updateDeliveryCalculation() {
@@ -1191,11 +1266,15 @@
 
       const itemsTotal = getItemsTotal();
       const finalTotal = itemsTotal + deliveryCharge;
-
       document.getElementById('grandTotalText').innerText = "₹" + finalTotal;
     }
 
     function openCheckoutModal() {
+      const itemsTotal = getItemsTotal();
+      const submitBtn = document.getElementById('orderSubmitBtn');
+      const alertBox = document.getElementById('modalMinOrderAlert');
+      const alertText = document.getElementById('modalMinOrderAlertText');
+
       let summaryRows = "";
 
       for (const id in userCart) {
@@ -1213,19 +1292,69 @@
       document.getElementById('distanceSelect').value = "0";
       updateDeliveryCalculation();
 
+      // Check ₹200 Minimum Order condition
+      if (itemsTotal < MINIMUM_ORDER_VALUE) {
+        const remaining = MINIMUM_ORDER_VALUE - itemsTotal;
+        alertBox.style.display = 'flex';
+        alertText.innerText = `Minimum order value is ₹${MINIMUM_ORDER_VALUE}. Please add ₹${remaining} more of delicious food to place order.`;
+        submitBtn.disabled = true;
+        submitBtn.innerText = `Add ₹${remaining} More to Order`;
+      } else {
+        alertBox.style.display = 'none';
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Confirm & Place Order";
+      }
+
       document.getElementById('checkoutBackdrop').style.display = 'flex';
     }
 
     function closeCheckoutModal() {
       document.getElementById('checkoutBackdrop').style.display = 'none';
+      document.getElementById('phoneErrorHint').style.display = 'none';
     }
 
     document.getElementById('checkoutBackdrop').addEventListener('click', function(e) {
       if (e.target === this) closeCheckoutModal();
     });
 
+    /* Live Phone Validation check */
+    function validatePhoneLive() {
+      const phoneInput = document.getElementById('custPhone');
+      // allow only digits
+      phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
+      const val = phoneInput.value;
+      const errorHint = document.getElementById('phoneErrorHint');
+
+      const isValid = /^[6-9]\d{9}$/.test(val);
+      if (val.length === 10 && !isValid) {
+        errorHint.style.display = 'block';
+      } else if (val.length === 10 && isValid) {
+        errorHint.style.display = 'none';
+      } else if (val.length > 0 && val.length < 10) {
+        errorHint.style.display = 'none';
+      }
+      return isValid;
+    }
+
     function handleOrderSubmit(e) {
       e.preventDefault();
+
+      const itemsTotal = getItemsTotal();
+      if (itemsTotal < MINIMUM_ORDER_VALUE) {
+        const remaining = MINIMUM_ORDER_VALUE - itemsTotal;
+        alert(`Minimum order value is ₹${MINIMUM_ORDER_VALUE} for delivery. Please add ₹${remaining} more items.`);
+        return;
+      }
+
+      const phoneInput = document.getElementById('custPhone');
+      const phoneVal = phoneInput.value.trim();
+      const phoneRegex = /^[6-9]\d{9}$/;
+
+      if (!phoneRegex.test(phoneVal)) {
+        document.getElementById('phoneErrorHint').style.display = 'block';
+        phoneInput.focus();
+        return;
+      }
 
       const customerName = document.getElementById('custName').value.trim();
       const finalGrandTotal = document.getElementById('grandTotalText').innerText;
@@ -1234,6 +1363,7 @@
       // Populate Success Popup
       document.getElementById('popupOrderId').innerText = randomOrderId;
       document.getElementById('popupCustName').innerText = customerName;
+      document.getElementById('popupCustPhone').innerText = phoneVal;
       document.getElementById('popupTotalAmount').innerText = finalGrandTotal;
 
       // Close checkout modal & show popup
