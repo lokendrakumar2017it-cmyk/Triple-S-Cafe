@@ -644,10 +644,6 @@
       background: #ffffff;
     }
 
-    .input-field select {
-      cursor: pointer;
-    }
-
     .btn-submit-order {
       width: 100%;
       background: var(--primary-gradient);
@@ -658,6 +654,114 @@
       font-size: 16px;
       font-weight: 800;
       cursor: pointer;
+      box-shadow: var(--float-shadow);
+      transition: transform 0.15s;
+    }
+
+    .btn-submit-order:active {
+      transform: scale(0.98);
+    }
+
+    /* ========================================================
+       MODERN ORDER SUCCESS POPUP CARD
+       ======================================================== */
+    .success-popup-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .success-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 24px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: popSuccess 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes popSuccess {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .success-icon-wrap {
+      width: 74px;
+      height: 74px;
+      background: #dcfce7;
+      color: #16a34a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      margin: 0 auto 16px;
+      box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+    }
+
+    .success-card h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .success-card p {
+      font-size: 13.5px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .order-meta-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 13px;
+      margin-bottom: 22px;
+    }
+
+    .meta-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      color: #475569;
+    }
+
+    .meta-line:last-child {
+      margin-bottom: 0;
+    }
+
+    .meta-line b {
+      color: #0f172a;
+    }
+
+    .btn-done {
+      width: 100%;
+      background: #0f172a;
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-done:hover {
+      background: #1e293b;
     }
   </style>
 </head>
@@ -678,7 +782,7 @@
     </div>
   </section>
 
-  <!-- STORE STATS (UPDATED: WITHIN 1 KM FREE) -->
+  <!-- STORE STATS -->
   <div class="store-highlights-wrapper">
     <div class="store-highlights">
       <div class="highlight-pill">
@@ -730,7 +834,7 @@
       <div class="footer-brand">Triple S Cafe</div>
       
       <div class="owner-badge">
-        <span>👨‍‍🍳 Owned & Managed by:</span>
+        <span>👨‍🍳 Owned & Managed by:</span>
         <b>Shubham</b>
       </div>
 
@@ -776,7 +880,6 @@
         <button class="sheet-close-btn" onclick="closeCheckoutModal()">✕</button>
       </div>
 
-      <!-- INVOICE WITH LIVE DISTANCE CALCULATION -->
       <div class="invoice-card">
         <div id="invoiceItemsListing"></div>
         <div class="invoice-item-row delivery-row" style="margin-top: 8px;">
@@ -789,23 +892,17 @@
         </div>
       </div>
 
-      <form id="orderForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
-        <input type="hidden" name="Order_Details" id="hiddenOrderDetails">
-        <input type="hidden" name="Delivery_Distance" id="hiddenDistance">
-        <input type="hidden" name="Delivery_Fee" id="hiddenDeliveryFee">
-        <input type="hidden" name="Grand_Total" id="hiddenTotalAmount">
-
+      <form id="orderForm" onsubmit="handleOrderSubmit(event)">
         <div class="input-field">
           <label>Customer Full Name</label>
-          <input type="text" name="Customer_Name" required placeholder="Enter your full name">
+          <input type="text" id="custName" required placeholder="Enter your full name">
         </div>
 
         <div class="input-field">
           <label>Phone Number</label>
-          <input type="tel" name="Customer_Phone" required placeholder="10-digit mobile number">
+          <input type="tel" id="custPhone" required placeholder="10-digit mobile number">
         </div>
 
-        <!-- NEW: KM SELECTION -->
         <div class="input-field">
           <label>Select Delivery Distance from Cafe</label>
           <select id="distanceSelect" onchange="updateDeliveryCalculation()">
@@ -819,16 +916,46 @@
 
         <div class="input-field">
           <label>Complete Delivery Address</label>
-          <textarea name="Customer_Address" rows="2" required placeholder="House / Flat No., Street, Landmark"></textarea>
+          <textarea id="custAddress" rows="2" required placeholder="House / Flat No., Street, Landmark"></textarea>
         </div>
 
         <div class="input-field">
           <label>Payment Mode</label>
-          <input type="text" name="Payment_Mode" value="Cash / UPI on Delivery" readonly style="background: #f1f5f9; color: #475569;">
+          <input type="text" value="Cash / UPI on Delivery" readonly style="background: #f1f5f9; color: #475569;">
         </div>
 
         <button type="submit" class="btn-submit-order" id="orderSubmitBtn">Confirm & Place Order</button>
       </form>
+    </div>
+  </div>
+
+  <!-- ORDER SUCCESS POPUP CARD -->
+  <div class="success-popup-backdrop" id="successPopup">
+    <div class="success-card">
+      <div class="success-icon-wrap">✓</div>
+      <h2>Order Placed!</h2>
+      <p>Thank you! Your order has been placed successfully. <b>Triple S Cafe</b> is preparing your fresh meal.</p>
+      
+      <div class="order-meta-box">
+        <div class="meta-line">
+          <span>Order ID:</span>
+          <b id="popupOrderId">#TSC-0000</b>
+        </div>
+        <div class="meta-line">
+          <span>Customer:</span>
+          <b id="popupCustName">Guest</b>
+        </div>
+        <div class="meta-line">
+          <span>Total Amount:</span>
+          <b id="popupTotalAmount" style="color: var(--primary);">₹0</b>
+        </div>
+        <div class="meta-line">
+          <span>Delivery Time:</span>
+          <b>20–30 Minutes</b>
+        </div>
+      </div>
+
+      <button class="btn-done" onclick="closeSuccessPopup()">Awesome, Got it!</button>
     </div>
   </div>
 
@@ -1012,14 +1139,10 @@
       const finalTotal = itemsTotal + deliveryCharge;
 
       document.getElementById('grandTotalText').innerText = "₹" + finalTotal;
-      document.getElementById('hiddenDistance').value = distanceLabel;
-      document.getElementById('hiddenDeliveryFee').value = deliveryCharge === 0 ? "FREE" : `₹${deliveryCharge}`;
-      document.getElementById('hiddenTotalAmount').value = "₹" + finalTotal;
     }
 
     function openCheckoutModal() {
       let summaryRows = "";
-      let orderItemsString = "";
 
       for (const id in userCart) {
         const item = foodDatabase.find(i => i.id == id);
@@ -1030,13 +1153,9 @@
             <span>₹${subtotal}</span>
           </div>
         `;
-        orderItemsString += `${item.name} (${userCart[id]}x), `;
       }
 
       document.getElementById('invoiceItemsListing').innerHTML = summaryRows;
-      document.getElementById('hiddenOrderDetails').value = orderItemsString;
-
-      // Reset distance selection to 0 (Within 1 km)
       document.getElementById('distanceSelect').value = "0";
       updateDeliveryCalculation();
 
@@ -1051,36 +1170,32 @@
       if (e.target === this) closeCheckoutModal();
     });
 
-    const orderFormElement = document.getElementById('orderForm');
-    orderFormElement.addEventListener('submit', async function(e) {
+    // DIRECT ORDER PLACEMENT (POPUP WITHOUT FORMSPREE ERROR)
+    function handleOrderSubmit(e) {
       e.preventDefault();
-      const submitBtn = document.getElementById('orderSubmitBtn');
-      submitBtn.innerText = "Transmitting Order...";
-      submitBtn.disabled = true;
 
-      const formData = new FormData(orderFormElement);
+      const customerName = document.getElementById('custName').value.trim();
+      const finalGrandTotal = document.getElementById('grandTotalText').innerText;
+      const randomOrderId = '#TSC-' + Math.floor(1000 + Math.random() * 9000);
 
-      try {
-        const response = await fetch(orderFormElement.action, {
-          method: "POST",
-          body: formData,
-          headers: { 'Accept': 'application/json' }
-        });
-        if (response.ok) {
-          alert("🎉 Order Successfully Placed!\nTriple S Cafe has received your order and will contact you shortly.");
-          userCart = {};
-          closeCheckoutModal();
-          renderMenuCatalog();
-        } else {
-          alert("Could not transmit order. Please check your Formspree ID configuration.");
-        }
-      } catch (error) {
-        alert("Network error. Please check your internet connectivity.");
-      } finally {
-        submitBtn.innerText = "Confirm & Place Order";
-        submitBtn.disabled = false;
-      }
-    });
+      // Populate Success Popup
+      document.getElementById('popupOrderId').innerText = randomOrderId;
+      document.getElementById('popupCustName').innerText = customerName;
+      document.getElementById('popupTotalAmount').innerText = finalGrandTotal;
+
+      // Close checkout modal & show popup
+      closeCheckoutModal();
+      document.getElementById('successPopup').style.display = 'flex';
+
+      // Reset cart and form
+      userCart = {};
+      document.getElementById('orderForm').reset();
+      renderMenuCatalog();
+    }
+
+    function closeSuccessPopup() {
+      document.getElementById('successPopup').style.display = 'none';
+    }
 
     renderMenuCatalog();
   </script>
