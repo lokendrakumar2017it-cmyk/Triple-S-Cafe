@@ -2,336 +2,569 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Triple S Cafe - Fast Food</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Triple S Cafe | Order Fast Food Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #e63946;
-      --secondary: #1d3557;
-      --light-bg: #f8f9fa;
-      --card-bg: #ffffff;
-      --accent: #ffb703;
+      --primary: #e23744; /* Zomato/Food Red */
+      --primary-dark: #cb202d;
+      --veg-green: #0f8a3c;
+      --bg: #f4f6f8;
+      --surface: #ffffff;
+      --text-main: #1c1c1c;
+      --text-muted: #686b78;
+      --border: #e9ecef;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
+
     body {
-      background-color: var(--light-bg);
-      color: #333;
-      padding-bottom: 95px;
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding-bottom: 100px;
     }
+
+    /* Professional Top Navbar */
     header {
-      background: linear-gradient(135deg, var(--secondary), #0d1b2a);
-      color: white;
-      padding: 16px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      padding: 12px 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
     }
-    .header-container {
-      max-width: 800px;
+
+    .nav-content {
+      max-width: 720px;
       margin: 0 auto;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 14px;
+      justify-content: space-between;
     }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
     .brand-logo {
-      width: 58px;
-      height: 58px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid var(--accent);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      flex-shrink: 0;
-      background: #ffffff;
+      border: 2px solid #ffb703;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: #fff;
     }
-    .brand-text {
-      text-align: left;
-    }
-    .brand-text h1 {
-      font-size: 22px;
-      letter-spacing: 1.2px;
-      color: var(--accent);
+
+    .brand-title {
+      font-size: 19px;
       font-weight: 800;
-      text-transform: uppercase;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
       line-height: 1.2;
     }
-    .brand-text p {
-      font-size: 12px;
-      color: #e0e1dd;
-      margin-top: 3px;
+
+    .brand-tagline {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 16px;
+
+    /* Store Info Card (Delivery, Rating) */
+    .store-badge-card {
+      max-width: 720px;
+      margin: 14px auto 0;
+      padding: 0 16px;
     }
-    .items-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 16px;
+
+    .badge-inner {
+      background: #fff;
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
     }
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+
+    .badge-item {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      border: 1px solid #e9ecef;
-      overflow: hidden;
-    }
-    .card-img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      background-color: #f1f3f5;
-    }
-    .tag {
       font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 4px;
-      display: inline-block;
-      width: fit-content;
-      margin-bottom: 8px;
-      font-weight: bold;
-      background: #ffe3e3;
-      color: #c92a2a;
+      color: var(--text-muted);
+      font-weight: 600;
     }
-    .item-name {
-      font-size: 16px;
-      font-weight: 700;
-      color: #111;
-      margin-bottom: 4px;
-      white-space: normal;
-      word-wrap: break-word;
-      line-height: 1.3;
+
+    .badge-item span {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-top: 2px;
     }
-    .item-desc {
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 12px;
-      line-height: 1.4;
+
+    .badge-sep {
+      width: 1px;
+      height: 28px;
+      background: var(--border);
     }
-    .price-action {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: auto;
-      padding-top: 8px;
-      border-top: 1px solid #f1f3f5;
+
+    /* Search Bar */
+    .search-wrap {
+      max-width: 720px;
+      margin: 14px auto 0;
+      padding: 0 16px;
     }
-    .price {
+
+    .search-input {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      outline: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+    }
+
+    /* Menu Layout */
+    .menu-container {
+      max-width: 720px;
+      margin: 18px auto 0;
+      padding: 0 16px;
+    }
+
+    .section-title {
       font-size: 17px;
       font-weight: 800;
-      color: var(--secondary);
-    }
-    .qty-controls {
+      margin-bottom: 12px;
+      color: var(--text-main);
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-between;
     }
-    .btn-qty {
-      background: #e9ecef;
-      border: 1px solid #ced4da;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
+
+    .section-title small {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .food-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .food-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Veg Badge Icon */
+    .veg-icon {
+      width: 15px;
+      height: 15px;
+      border: 1.8px solid var(--veg-green);
+      border-radius: 3px;
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-bottom: 6px;
     }
-    .qty-num {
+
+    .veg-icon::after {
+      content: "";
+      width: 7px;
+      height: 7px;
+      background: var(--veg-green);
+      border-radius: 50%;
+    }
+
+    .food-name {
+      font-size: 16px;
       font-weight: 700;
-      min-width: 16px;
-      text-align: center;
-      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      line-height: 1.3;
     }
-    .add-btn {
-      background: var(--primary);
-      color: white;
+
+    .food-price {
+      font-size: 15px;
+      font-weight: 800;
+      color: #2b2d42;
+      margin-bottom: 6px;
+    }
+
+    .food-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Food Image & Floating Add Button */
+    .food-media-box {
+      width: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .food-img {
+      width: 110px;
+      height: 100px;
+      border-radius: 12px;
+      object-fit: cover;
+      background-color: #f1f3f5;
+    }
+
+    /* Swiggy Style Add / Qty Controller */
+    .qty-wrap {
+      position: absolute;
+      bottom: -10px;
+      background: #ffffff;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      min-width: 86px;
+      justify-content: space-between;
+    }
+
+    .add-init-btn {
+      width: 100%;
+      background: #ffffff;
       border: none;
-      padding: 7px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 700;
+      color: var(--primary);
+      font-weight: 800;
       font-size: 14px;
+      padding: 7px 14px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .add-btn:active {
-      transform: scale(0.96);
+
+    .qty-btn {
+      background: transparent;
+      border: none;
+      color: var(--primary);
+      font-size: 17px;
+      font-weight: 800;
+      padding: 5px 10px;
+      cursor: pointer;
     }
-    .cart-bar {
+
+    .qty-val {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    /* Bottom Cart Notification Bar */
+    .cart-drawer-bar {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: white;
-      box-shadow: 0 -4px 14px rgba(0,0,0,0.12);
-      padding: 12px 20px;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      max-width: 696px;
+      margin: 0 auto;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 14px;
+      padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 100;
-    }
-    .cart-info {
-      font-size: 15px;
-      font-weight: 700;
-      color: #222;
-    }
-    .checkout-btn {
-      background: #25d366;
-      color: white;
-      border: none;
-      padding: 12px 22px;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: bold;
+      box-shadow: 0 8px 24px rgba(226, 55, 68, 0.4);
+      z-index: 99;
       cursor: pointer;
     }
+
+    .cart-drawer-info b {
+      font-size: 15px;
+      letter-spacing: 0.2px;
+    }
+
+    .cart-drawer-info p {
+      font-size: 11px;
+      opacity: 0.9;
+    }
+
+    .view-cart-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Modal / Bottom Sheet Form */
     .modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.65);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
       z-index: 1000;
+      align-items: flex-end;
       justify-content: center;
-      align-items: center;
-      padding: 16px;
     }
-    .modal-content {
-      background: white;
-      border-radius: 12px;
-      padding: 22px;
+
+    .modal-sheet {
+      background: #ffffff;
       width: 100%;
-      max-width: 440px;
-      max-height: 90vh;
+      max-width: 550px;
+      border-radius: 20px 20px 0 0;
+      padding: 22px 20px 30px;
+      max-height: 88vh;
       overflow-y: auto;
+      animation: slideUp 0.25s ease-out;
     }
-    .modal h2 {
-      font-size: 20px;
-      margin-bottom: 12px;
-      color: var(--secondary);
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
     }
+
+    .sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sheet-header h3 {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .close-sheet {
+      background: #f1f3f5;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .bill-details {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .bill-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+    }
+
+    .bill-row.total {
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 8px;
+      margin-top: 8px;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
     .form-group {
       margin-bottom: 12px;
     }
+
     .form-group label {
       display: block;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: #555;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
+
     .form-group input, .form-group textarea {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ced4da;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-    .order-summary-box {
-      background: #f8f9fa;
       padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 14px;
-      font-size: 13px;
-      border: 1px solid #e9ecef;
-      line-height: 1.5;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
     }
-    .submit-order-btn {
+
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .place-order-btn {
       width: 100%;
       background: var(--primary);
-      color: white;
+      color: #fff;
       border: none;
-      padding: 12px;
-      border-radius: 6px;
+      padding: 14px;
+      border-radius: 12px;
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 800;
       cursor: pointer;
-    }
-    .close-btn {
-      background: none;
-      border: none;
-      font-size: 14px;
-      color: #666;
-      width: 100%;
       margin-top: 10px;
-      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(226, 55, 68, 0.3);
     }
   </style>
 </head>
 <body>
 
-  <!-- Header with Brand Logo -->
+  <!-- Top Navbar -->
   <header>
-    <div class="header-container">
-      <img src="logo.png" alt="Triple S Cafe Logo" class="brand-logo" 
-           onerror="if(!this.triedJpg){ this.triedJpg=true; this.src='logo.jpg'; } else { this.style.display='none'; }">
-      <div class="brand-text">
-        <h1>Triple S Cafe</h1>
-        <p>Hot & Fresh Fast Food | Instant Home Delivery</p>
+    <div class="nav-content">
+      <div class="brand-box">
+        <img src="logo.png" alt="Triple S Cafe" class="brand-logo" onerror="if(!this.triedJpg){ this.triedJpg=true; this.src='logo.jpg'; } else { this.style.display='none'; }">
+        <div>
+          <div class="brand-title">Triple S Cafe</div>
+          <div class="brand-tagline">⚡ Quick Fast Food & Snacks</div>
+        </div>
       </div>
     </div>
   </header>
 
-  <div class="container">
-    <div class="items-grid" id="menuGrid"></div>
-  </div>
-
-  <div class="cart-bar" id="cartBar" style="display: none;">
-    <div class="cart-info">
-      <span id="totalItems">0</span> Items | Total: ₹<span id="totalPrice">0</span>
+  <!-- Store Stats (Zomato Style) -->
+  <div class="store-badge-card">
+    <div class="badge-inner">
+      <div class="badge-item">
+        Delivery Time
+        <span>⏱️ 25–35 Mins</span>
+      </div>
+      <div class="badge-sep"></div>
+      <div class="badge-item">
+        Rating
+        <span>⭐ 4.6 (120+)</span>
+      </div>
+      <div class="badge-sep"></div>
+      <div class="badge-item">
+        Payment
+        <span>💵 Cash & UPI</span>
+      </div>
     </div>
-    <button class="checkout-btn" onclick="openOrderModal()">
-      Place Order ➔
-    </button>
   </div>
 
-  <div class="modal" id="orderModal">
-    <div class="modal-content">
-      <h2>Complete Your Order</h2>
-      <div class="order-summary-box" id="orderSummaryText"></div>
+  <!-- Live Search Bar -->
+  <div class="search-wrap">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search fast food (Burger, Patties, Chowmein...)" oninput="filterMenu()">
+  </div>
 
+  <!-- Menu List -->
+  <div class="menu-container">
+    <div class="section-title">
+      Recommended Dishes
+      <small id="itemCountLabel">7 Items</small>
+    </div>
+    <div id="foodList"></div>
+  </div>
+
+  <!-- Floating Bottom Cart Bar -->
+  <div class="cart-drawer-bar" id="cartDrawer" style="display: none;" onclick="openOrderSheet()">
+    <div class="cart-drawer-info">
+      <b id="cartDrawerItems">0 Items | ₹0</b>
+      <p>Extra charges may apply | Tap to checkout</p>
+    </div>
+    <div class="view-cart-btn">
+      View Cart ➔
+    </div>
+  </div>
+
+  <!-- Order / Checkout Bottom Sheet Modal -->
+  <div class="modal" id="orderModal">
+    <div class="modal-sheet">
+      <div class="sheet-header">
+        <h3>Order Summary</h3>
+        <button class="close-sheet" onclick="closeOrderSheet()">✕</button>
+      </div>
+
+      <!-- Bill Breakdown -->
+      <div class="bill-details">
+        <div id="summaryItemsList"></div>
+        <div class="bill-row" style="margin-top: 8px;">
+          <span>Delivery Charge</span>
+          <span style="color: var(--veg-green); font-weight: 700;">FREE</span>
+        </div>
+        <div class="bill-row total">
+          <span>To Pay</span>
+          <span id="billGrandTotal">₹0</span>
+        </div>
+      </div>
+
+      <!-- Formspree Integration Form -->
       <form id="orderForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
-        <input type="hidden" name="Order_Items" id="hiddenOrderDetails">
-        <input type="hidden" name="Total_Amount" id="hiddenTotalBill">
+        <input type="hidden" name="Order_Items" id="hiddenItems">
+        <input type="hidden" name="Total_Bill" id="hiddenTotal">
 
         <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" name="Customer_Name" required placeholder="Enter full name">
+          <label>Your Name</label>
+          <input type="text" name="Customer_Name" required placeholder="Enter your full name">
         </div>
 
         <div class="form-group">
-          <label>Mobile Number</label>
+          <label>Phone Number</label>
           <input type="tel" name="Customer_Phone" required placeholder="10-digit mobile number">
         </div>
 
         <div class="form-group">
-          <label>Delivery Address</label>
-          <textarea name="Customer_Address" rows="3" required placeholder="House/Flat No., Street, Landmark"></textarea>
+          <label>Complete Delivery Address</label>
+          <textarea name="Customer_Address" rows="2" required placeholder="House/Flat No., Landmark, Colony"></textarea>
         </div>
 
         <div class="form-group">
           <label>Payment Method</label>
-          <input type="text" name="Payment_Method" value="Cash / UPI on Delivery" readonly>
+          <input type="text" name="Payment_Method" value="Cash / UPI on Delivery" readonly style="background: #f1f3f5; font-weight: 600;">
         </div>
 
-        <button type="submit" class="submit-order-btn" id="submitBtn">Confirm & Send Order</button>
-        <button type="button" class="close-btn" onclick="closeOrderModal()">Cancel</button>
+        <button type="submit" class="place-order-btn" id="submitOrderBtn">Confirm & Place Order</button>
       </form>
     </div>
   </div>
@@ -341,52 +574,52 @@
       { 
         id: 1, 
         name: "Patties", 
-        desc: "Crispy golden baked puff patties with potato filling", 
+        desc: "Golden crispy puff pastry filled with delicious spiced potato mixture.", 
         price: 30, 
         image: "patties.jpg",
-        altImage: "patties.png"
+        fallback: "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=500&auto=format&fit=crop&q=80"
       },
       { 
         id: 2, 
         name: "Burger", 
-        desc: "Fresh bun with vegetable patty, crunchy onions & creamy sauces", 
+        desc: "Fresh toasted bun with crisp vegetable patty, crunchy onions & signature creamy sauces.", 
         price: 40, 
         image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=80" 
       },
       { 
         id: 3, 
         name: "Stuffed Patties", 
-        desc: "Extra loaded baked puff pastry with special spiced stuffing", 
+        desc: "Loaded crispy puff pastry enriched with double stuffing & paneer seasoning.", 
         price: 40, 
         image: "patties.jpg",
-        altImage: "patties.png"
+        fallback: "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=500&auto=format&fit=crop&q=80"
       },
       { 
         id: 4, 
         name: "Chowmein (Half Plate)", 
-        desc: "Stir-fried street noodles tossed with cabbage, capsicum & sauces", 
+        desc: "Street-style wok-tossed noodles with cabbage, capsicum & spicy Chinese seasoning.", 
         price: 30, 
         image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&auto=format&fit=crop&q=80" 
       },
       { 
         id: 5, 
         name: "Chowmein (Full Plate)", 
-        desc: "Full portion spicy noodles tossed with garden fresh veggies", 
+        desc: "Generous serving of wok-fried savory noodles loaded with crunchy vegetables.", 
         price: 70, 
         image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&auto=format&fit=crop&q=80" 
       },
       { 
         id: 6, 
         name: "Chilli Potato", 
-        desc: "Crispy potato fries glazed in spicy sweet honey chilli gravy with sesame", 
+        desc: "Crispy french fries glazed in sweet & spicy honey chilli sauce with roasted sesame seeds.", 
         price: 70, 
         image: "chilli-potato.jpg",
-        altImage: "chilli-potato.png"
+        fallback: "https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?w=500&auto=format&fit=crop&q=80"
       },
       { 
         id: 7, 
         name: "Maggi", 
-        desc: "Hot & savory 2-minute classic masala noodles with spices", 
+        desc: "Hot, freshly prepared 2-minute classic masala Maggi noodles with signature herbs.", 
         price: 50, 
         image: "https://images.unsplash.com/photo-1612927601601-6638404737ce?w=500&auto=format&fit=crop&q=80" 
       }
@@ -394,62 +627,73 @@
 
     let cart = {};
 
-    function renderMenu() {
-      const grid = document.getElementById('menuGrid');
-      grid.innerHTML = '';
+    function renderMenu(itemsToRender = products) {
+      const container = document.getElementById('foodList');
+      container.innerHTML = '';
+      document.getElementById('itemCountLabel').innerText = `${itemsToRender.length} Items`;
 
-      products.forEach(item => {
+      if(itemsToRender.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding: 40px 10px; color:#888;">No food items found matching your search.</div>`;
+        return;
+      }
+
+      itemsToRender.forEach(item => {
         const qty = cart[item.id] || 0;
         
-        let actionHTML = '';
+        let qtyControls = '';
         if (qty === 0) {
-          actionHTML = `<button class="add-btn" onclick="addToCart(${item.id})">+ Add</button>`;
+          qtyControls = `<button class="add-init-btn" onclick="modifyQty(${item.id}, 1)">Add</button>`;
         } else {
-          actionHTML = `
-            <div class="qty-controls">
-              <button class="btn-qty" onclick="changeQty(${item.id}, -1)">-</button>
-              <span class="qty-num">${qty}</span>
-              <button class="btn-qty" onclick="changeQty(${item.id}, 1)">+</button>
-            </div>
+          qtyControls = `
+            <button class="qty-btn" onclick="modifyQty(${item.id}, -1)">−</button>
+            <span class="qty-val">${qty}</span>
+            <button class="qty-btn" onclick="modifyQty(${item.id}, 1)">+</button>
           `;
         }
 
-        grid.innerHTML += `
-          <div class="card">
-            <div>
-              <img src="${item.image}" alt="${item.name}" class="card-img" 
-                   onerror="if(!this.altTried && '${item.altImage || ''}'){ this.altTried=true; this.src='${item.altImage}'; } else { this.src='https://placehold.co/300x200?text=' + encodeURIComponent('${item.name}'); }">
-              <span class="tag">Fast Food</span>
-              <div class="item-name">${item.name}</div>
-              <div class="item-desc">${item.desc}</div>
+        container.innerHTML += `
+          <div class="food-card">
+            <div class="food-details">
+              <div class="veg-icon" title="Pure Veg"></div>
+              <div class="food-name">${item.name}</div>
+              <div class="food-price">₹${item.price}</div>
+              <div class="food-desc">${item.desc}</div>
             </div>
-            <div class="price-action">
-              <span class="price">₹${item.price}</span>
-              ${actionHTML}
+            <div class="food-media-box">
+              <img src="${item.image}" alt="${item.name}" class="food-img" 
+                   onerror="if(!this.triedFallback && '${item.fallback || ''}'){ this.triedFallback=true; this.src='${item.fallback}'; } else { this.src='https://placehold.co/200x200?text=' + encodeURIComponent('${item.name}'); }">
+              <div class="qty-wrap">
+                ${qtyControls}
+              </div>
             </div>
           </div>
         `;
       });
 
-      updateCartDisplay();
+      updateCartBar();
     }
 
-    function addToCart(id) {
-      cart[id] = 1;
-      renderMenu();
-    }
-
-    function changeQty(id, delta) {
+    function modifyQty(id, delta) {
       const updated = (cart[id] || 0) + delta;
       if (updated > 0) {
         cart[id] = updated;
       } else {
         delete cart[id];
       }
-      renderMenu();
+      renderMenu(getCurrentFilteredProducts());
     }
 
-    function updateCartDisplay() {
+    function getCurrentFilteredProducts() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      if (!query) return products;
+      return products.filter(p => p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query));
+    }
+
+    function filterMenu() {
+      renderMenu(getCurrentFilteredProducts());
+    }
+
+    function updateCartBar() {
       let count = 0;
       let total = 0;
 
@@ -459,44 +703,50 @@
         total += item.price * cart[id];
       }
 
+      const drawer = document.getElementById('cartDrawer');
       if (count > 0) {
-        document.getElementById('cartBar').style.display = 'flex';
-        document.getElementById('totalItems').innerText = count;
-        document.getElementById('totalPrice').innerText = total;
+        drawer.style.display = 'flex';
+        document.getElementById('cartDrawerItems').innerText = `${count} ITEM${count > 1 ? 'S' : ''} | ₹${total}`;
       } else {
-        document.getElementById('cartBar').style.display = 'none';
+        drawer.style.display = 'none';
       }
     }
 
-    function openOrderModal() {
-      let summaryText = "";
+    function openOrderSheet() {
+      let summaryHTML = "";
       let orderItemsString = "";
       let total = 0;
 
       for (const id in cart) {
         const item = products.find(p => p.id == id);
         const subtotal = item.price * cart[id];
-        summaryText += `<div>${item.name} x ${cart[id]} = <b>₹${subtotal}</b></div>`;
+        summaryHTML += `
+          <div class="bill-row">
+            <span>${item.name} × ${cart[id]}</span>
+            <span>₹${subtotal}</span>
+          </div>
+        `;
         orderItemsString += `${item.name} (Qty: ${cart[id]}), `;
         total += subtotal;
       }
 
-      summaryText += `<hr style="margin: 8px 0; border: none; border-top: 1px solid #ddd;"><div style="font-size: 15px; font-weight: bold;">Grand Total: ₹${total}</div>`;
-      
-      document.getElementById("orderSummaryText").innerHTML = summaryText;
-      document.getElementById("hiddenOrderDetails").value = orderItemsString;
-      document.getElementById("hiddenTotalBill").value = "₹" + total;
-      document.getElementById("orderModal").style.display = "flex";
+      document.getElementById('summaryItemsList').innerHTML = summaryHTML;
+      document.getElementById('billGrandTotal').innerText = "₹" + total;
+      document.getElementById('hiddenItems').value = orderItemsString;
+      document.getElementById('hiddenTotal').value = "₹" + total;
+
+      document.getElementById('orderModal').style.display = 'flex';
     }
 
-    function closeOrderModal() {
-      document.getElementById("orderModal").style.display = "none";
+    function closeOrderSheet() {
+      document.getElementById('orderModal').style.display = 'none';
     }
 
-    const form = document.getElementById("orderForm");
-    form.addEventListener("submit", async function(e) {
+    // Handle Form Submit
+    const form = document.getElementById('orderForm');
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      const btn = document.getElementById("submitBtn");
+      const btn = document.getElementById('submitOrderBtn');
       btn.innerText = "Placing Order...";
       btn.disabled = true;
 
@@ -510,21 +760,28 @@
           headers: { 'Accept': 'application/json' }
         });
         if (res.ok) {
-          alert("Order Placed Successfully! Triple S Cafe will contact you shortly.");
+          alert("🎉 Order Placed Successfully! Triple S Cafe will prepare your food and contact you shortly.");
           cart = {};
-          closeOrderModal();
+          closeOrderSheet();
           renderMenu();
         } else {
-          alert("Unable to send order right now. Please check Formspree ID.");
+          alert("Order sending failed. Please check your Formspree ID.");
         }
       } catch (err) {
         alert("Network error. Please check your internet connection.");
       } finally {
-        btn.innerText = "Confirm & Send Order";
+        btn.innerText = "Confirm & Place Order";
         btn.disabled = false;
       }
     });
 
+    // Close modal on outside click
+    window.onclick = function(e) {
+      const modal = document.getElementById('orderModal');
+      if (e.target === modal) closeOrderSheet();
+    };
+
+    // Initial render
     renderMenu();
   </script>
 </body>
