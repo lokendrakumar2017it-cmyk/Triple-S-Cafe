@@ -26,24 +26,45 @@
     header {
       background: linear-gradient(135deg, var(--secondary), #0d1b2a);
       color: white;
-      text-align: center;
-      padding: 24px 16px;
+      padding: 16px;
       position: sticky;
       top: 0;
       z-index: 100;
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
-    header h1 {
-      font-size: 26px;
-      letter-spacing: 1.5px;
+    .header-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+    .brand-logo {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      flex-shrink: 0;
+      background: #ffffff;
+    }
+    .brand-text {
+      text-align: left;
+    }
+    .brand-text h1 {
+      font-size: 22px;
+      letter-spacing: 1.2px;
       color: var(--accent);
       font-weight: 800;
       text-transform: uppercase;
+      line-height: 1.2;
     }
-    header p {
-      font-size: 13px;
+    .brand-text p {
+      font-size: 12px;
       color: #e0e1dd;
-      margin-top: 4px;
+      margin-top: 3px;
     }
     .container {
       max-width: 800px;
@@ -178,7 +199,6 @@
       font-weight: bold;
       cursor: pointer;
     }
-    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -256,9 +276,16 @@
 </head>
 <body>
 
+  <!-- Header with Brand Logo -->
   <header>
-    <h1>Triple S Cafe</h1>
-    <p>Hot & Fresh Fast Food | Instant Home Delivery</p>
+    <div class="header-container">
+      <img src="logo.png" alt="Triple S Cafe Logo" class="brand-logo" 
+           onerror="if(!this.triedJpg){ this.triedJpg=true; this.src='logo.jpg'; } else { this.style.display='none'; }">
+      <div class="brand-text">
+        <h1>Triple S Cafe</h1>
+        <p>Hot & Fresh Fast Food | Instant Home Delivery</p>
+      </div>
+    </div>
   </header>
 
   <div class="container">
@@ -310,17 +337,14 @@
   </div>
 
   <script>
-    // AAPKI UPLOAD KI HUI PHOTOS KA DIRECT PATH
-    const PATTIES_IMAGE = "patties.jpg";
-    const CHILLI_POTATO_IMAGE = "chilli-potato.jpg";
-
     const products = [
       { 
         id: 1, 
         name: "Patties", 
         desc: "Crispy golden baked puff patties with potato filling", 
         price: 30, 
-        image: PATTIES_IMAGE 
+        image: "patties.jpg",
+        altImage: "patties.png"
       },
       { 
         id: 2, 
@@ -334,7 +358,8 @@
         name: "Stuffed Patties", 
         desc: "Extra loaded baked puff pastry with special spiced stuffing", 
         price: 40, 
-        image: PATTIES_IMAGE 
+        image: "patties.jpg",
+        altImage: "patties.png"
       },
       { 
         id: 4, 
@@ -355,7 +380,8 @@
         name: "Chilli Potato", 
         desc: "Crispy potato fries glazed in spicy sweet honey chilli gravy with sesame", 
         price: 70, 
-        image: CHILLI_POTATO_IMAGE 
+        image: "chilli-potato.jpg",
+        altImage: "chilli-potato.png"
       },
       { 
         id: 7, 
@@ -391,7 +417,8 @@
         grid.innerHTML += `
           <div class="card">
             <div>
-              <img src="${item.image}" alt="${item.name}" class="card-img" onerror="this.src='https://placehold.co/300x200?text=${encodeURIComponent(item.name)}'">
+              <img src="${item.image}" alt="${item.name}" class="card-img" 
+                   onerror="if(!this.altTried && '${item.altImage || ''}'){ this.altTried=true; this.src='${item.altImage}'; } else { this.src='https://placehold.co/300x200?text=' + encodeURIComponent('${item.name}'); }">
               <span class="tag">Fast Food</span>
               <div class="item-name">${item.name}</div>
               <div class="item-desc">${item.desc}</div>
