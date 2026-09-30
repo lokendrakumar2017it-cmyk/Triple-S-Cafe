@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Triple S Cafe - Kirana & Fast Food</title>
+  <title>Triple S Cafe - Order Fast Food Online</title>
   <style>
     :root {
-      --primary: #e63946;
-      --secondary: #1d3557;
-      --light-bg: #f8f9fa;
-      --card-bg: #ffffff;
+      --primary: #d90429;
+      --secondary: #2b2d42;
+      --accent: #ffb703;
+      --bg: #f8f9fa;
+      --card: #ffffff;
     }
     * {
       box-sizing: border-box;
@@ -18,137 +19,187 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     body {
-      background-color: var(--light-bg);
+      background-color: var(--bg);
       color: #333;
-      padding-bottom: 95px;
+      padding-bottom: 110px;
     }
     header {
-      background: linear-gradient(135deg, var(--secondary), #0d1b2a);
+      background: linear-gradient(135deg, var(--secondary), #111);
       color: white;
       text-align: center;
-      padding: 22px 16px;
+      padding: 24px 16px;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     header h1 {
-      font-size: 24px;
-      color: #ffb703;
+      font-size: 26px;
+      color: var(--accent);
       letter-spacing: 1px;
     }
     header p {
       font-size: 13px;
-      color: #e0e1dd;
+      color: #edf2f4;
       margin-top: 4px;
     }
-    .tabs {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      padding: 14px 10px;
-      background: white;
-      position: sticky;
-      top: 80px;
-      z-index: 90;
-      border-bottom: 1px solid #e5e5e5;
-    }
-    .tab-btn {
-      padding: 8px 16px;
-      border: 1px solid #ccc;
-      background: white;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .tab-btn.active {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
     .container {
-      max-width: 800px;
+      max-width: 600px;
       margin: 0 auto;
       padding: 16px;
     }
-    .items-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 14px;
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--secondary);
     }
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 14px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    .items-list {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      border: 1px solid #eee;
+      gap: 12px;
     }
-    .tag {
-      font-size: 11px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      display: inline-block;
-      width: fit-content;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
-    .tag-food { background: #ffe3e3; color: #c92a2a; }
-    .tag-kirana { background: #d3f9d8; color: #2b8a3e; }
-    .item-name {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .item-desc {
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 10px;
-    }
-    .price-action {
+    .item-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 14px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: auto;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      border: 1px solid #e9ecef;
     }
-    .price {
+    .item-info h3 {
+      font-size: 16px;
+      color: #222;
+      margin-bottom: 4px;
+    }
+    .item-price {
       font-size: 15px;
       font-weight: 700;
-      color: var(--secondary);
+      color: var(--primary);
     }
-    .add-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .qty-btn {
+      background: #f1f3f5;
+      border: 1px solid #ced4da;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 18px;
+      font-weight: bold;
       cursor: pointer;
-      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    .qty-btn:active {
+      background: #dee2e6;
+    }
+    .qty-text {
+      font-weight: 700;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    /* Bottom Floating Bar */
     .cart-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       background: white;
-      box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
-      padding: 12px 18px;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.12);
+      padding: 14px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 100;
+      z-index: 99;
     }
-    .checkout-btn {
-      background: #25d366;
+    .order-now-btn {
+      background: var(--primary);
       color: white;
       border: none;
-      padding: 10px 18px;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Modal Form Overlay */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 14px;
+      padding: 22px;
+      width: 100%;
+      max-width: 450px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal h2 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: var(--secondary);
+    }
+    .form-group {
+      margin-bottom: 12px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ced4da;
       border-radius: 8px;
       font-size: 14px;
+    }
+    .order-summary {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      font-size: 13px;
+    }
+    .submit-order-btn {
+      width: 100%;
+      background: #2b8a3e;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 14px;
+      color: #666;
+      width: 100%;
+      margin-top: 10px;
       cursor: pointer;
     }
   </style>
@@ -157,116 +208,182 @@
 
   <header>
     <h1>TRIPLE S CAFE</h1>
-    <p>Fresh Fast Food & Kirana Essentials | Direct WhatsApp Order</p>
+    <p>Garam & Fresh Fast Food | Instant Home Delivery</p>
   </header>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="filterMenu('all')">Sabhi Items</button>
-    <button class="tab-btn" onclick="filterMenu('fastfood')">🍔 Fast Food</button>
-    <button class="tab-btn" onclick="filterMenu('kirana')">🛒 Kirana</button>
-  </div>
-
   <div class="container">
-    <div class="items-grid" id="menuGrid"></div>
+    <div class="section-title">Menu List</div>
+    <div class="items-list" id="menuList"></div>
   </div>
 
+  <!-- Bottom Floating Bar -->
   <div class="cart-bar" id="cartBar" style="display: none;">
     <div>
-      <b><span id="totalItems">0</span> Items</b> | ₹<span id="totalPrice">0</span>
+      <b><span id="cartCount">0</span> Items</b> | Total: <b>₹<span id="cartTotal">0</span></b>
     </div>
-    <button class="checkout-btn" onclick="orderOnWhatsApp()">
-      WhatsApp Order 📲
-    </button>
+    <button class="order-now-btn" onclick="openOrderModal()">Order Karein ➔</button>
+  </div>
+
+  <!-- Order Details Popup Modal -->
+  <div class="modal" id="orderModal">
+    <div class="modal-content">
+      <h2>Delivery Details</h2>
+      <div class="order-summary" id="orderSummaryText"></div>
+
+      <!-- Free Formspree Form: Order data aapke email par aayega -->
+      <form id="orderForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+        <input type="hidden" name="Order_Details" id="hiddenOrderDetails">
+        <input type="hidden" name="Total_Bill" id="hiddenTotalBill">
+
+        <div class="form-group">
+          <label>Aapka Naam</label>
+          <input type="text" name="Customer_Name" required placeholder="E.g. Rahul Sharma">
+        </div>
+
+        <div class="form-group">
+          <label>Mobile Number</label>
+          <input type="tel" name="Customer_Phone" required placeholder="E.g. 9876543210">
+        </div>
+
+        <div class="form-group">
+          <label>Delivery Address</label>
+          <textarea name="Customer_Address" rows="3" required placeholder="Ghar ka number, gali/road, landmark"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Payment Mode</label>
+          <input type="text" name="Payment_Mode" value="Cash / UPI on Delivery" readonly>
+        </div>
+
+        <button type="submit" class="submit-order-btn" id="submitBtn">Confirm Order</button>
+        <button type="button" class="close-btn" onclick="closeOrderModal()">Cancel</button>
+      </form>
+    </div>
   </div>
 
   <script>
-    // YAHA APNA WHATSAPP NUMBER DALEIN (Country code 91 ke sath)
-    const SHOP_WHATSAPP_NUMBER = "91XXXXXXXXXX"; 
-
-    const products = [
-      { id: 1, category: 'fastfood', name: 'Veg Crispy Burger', desc: 'Fresh patty with cheese & mayo', price: 60 },
-      { id: 2, category: 'fastfood', name: 'Veg Chowmein', desc: 'Desi style noodles', price: 70 },
-      { id: 3, category: 'fastfood', name: 'Paneer Cheese Roll', desc: 'Loaded paneer with spices', price: 90 },
-      { id: 4, category: 'fastfood', name: 'French Fries', desc: 'Crispy salted fries', price: 50 },
-      { id: 5, category: 'fastfood', name: 'Cold Coffee', desc: 'Thick chilled coffee', price: 40 },
-      { id: 6, category: 'kirana', name: 'Aashirvaad Atta (5kg)', desc: 'Whole wheat flour', price: 230 },
-      { id: 7, category: 'kirana', name: 'Fortune Mustard Oil (1L)', desc: 'Kachi ghani pure oil', price: 145 },
-      { id: 8, category: 'kirana', name: 'Tata Tea Gold (250g)', desc: 'Rich blend leaf tea', price: 120 },
-      { id: 9, category: 'kirana', name: 'Maggi (Pack of 4)', desc: 'Instant noodles', price: 56 },
-      { id: 10, category: 'kirana', name: 'Amul Butter (100g)', desc: 'Salted butter', price: 58 }
+    // Fast Food Menu Items
+    const menuItems = [
+      { id: 1, name: "Patties", price: 30 },
+      { id: 2, name: "Burger", price: 40 },
+      { id: 3, name: "Stuffed Patties", price: 40 },
+      { id: 4, name: "Chowmein (Half Plate)", price: 30 },
+      { id: 5, name: "Chowmein (Full Plate)", price: 70 },
+      { id: 6, name: "Chilli Potato", price: 70 },
+      { id: 7, name: "Maggi", price: 50 }
     ];
 
     let cart = {};
 
-    function renderMenu(items) {
-      const grid = document.getElementById('menuGrid');
-      grid.innerHTML = '';
-      items.forEach(item => {
-        const isFood = item.category === 'fastfood';
-        grid.innerHTML += `
-          <div class="card">
-            <div>
-              <span class="tag ${isFood ? 'tag-food' : 'tag-kirana'}">
-                ${isFood ? 'Fast Food' : 'Kirana'}
-              </span>
-              <div class="item-name">${item.name}</div>
-              <div class="item-desc">${item.desc}</div>
+    function renderMenu() {
+      const container = document.getElementById("menuList");
+      container.innerHTML = "";
+
+      menuItems.forEach(item => {
+        const qty = cart[item.id] || 0;
+        container.innerHTML += `
+          <div class="item-card">
+            <div class="item-info">
+              <h3>${item.name}</h3>
+              <div class="item-price">₹${item.price}</div>
             </div>
-            <div class="price-action">
-              <span class="price">₹${item.price}</span>
-              <button class="add-btn" onclick="addToCart(${item.id})">+ Add</button>
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+              <span class="qty-text">${qty}</span>
+              <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
             </div>
           </div>
         `;
       });
+      updateCartBar();
     }
 
-    function filterMenu(cat) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      if (cat === 'all') {
-        renderMenu(products);
+    function changeQty(id, delta) {
+      const current = cart[id] || 0;
+      const updated = current + delta;
+      if (updated > 0) {
+        cart[id] = updated;
       } else {
-        renderMenu(products.filter(p => p.category === cat));
+        delete cart[id];
       }
+      renderMenu();
     }
 
-    function addToCart(id) {
-      cart[id] = (cart[id] || 0) + 1;
-      updateCartDisplay();
-    }
-
-    function updateCartDisplay() {
-      let count = 0, total = 0;
-      for (const id in cart) {
-        const item = products.find(p => p.id == id);
+    function updateCartBar() {
+      let count = 0;
+      let total = 0;
+      for (let id in cart) {
+        const item = menuItems.find(i => i.id == id);
         count += cart[id];
         total += item.price * cart[id];
       }
       if (count > 0) {
-        document.getElementById('cartBar').style.display = 'flex';
-        document.getElementById('totalItems').innerText = count;
-        document.getElementById('totalPrice').innerText = total;
+        document.getElementById("cartBar").style.display = "flex";
+        document.getElementById("cartCount").innerText = count;
+        document.getElementById("cartTotal").innerText = total;
       } else {
-        document.getElementById('cartBar').style.display = 'none';
+        document.getElementById("cartBar").style.display = "none";
       }
     }
 
-    function orderOnWhatsApp() {
-      let message = "Namaste Triple S Cafe! Mujhe order place karna hai:\n\n";
+    function openOrderModal() {
+      let summaryText = "";
+      let orderItemsString = "";
       let total = 0;
-      for (const id in cart) {
-        const item = products.find(p => p.id == id);
+
+      for (let id in cart) {
+        const item = menuItems.find(i => i.id == id);
         const subtotal = item.price * cart[id];
-        message += `• ${item.name} x ${cart[id]} = ₹${subtotal}\n`;
+        summaryText += `${item.name} x ${cart[id]} = ₹${subtotal}<br>`;
+        orderItemsString += `${item.name} (${cart[id]} qty), `;
         total += subtotal;
       }
-      message += `\n*Total Bill: ₹${total}*`;
-      message += `\n\nMera Delivery Address: `;
-      window.open(`https://wa.me/${8445656674}?text=${encodeURIComponent(message)}`, '_blank');
+
+      summaryText += `<b>Total Bill: ₹${total}</b>`;
+      document.getElementById("orderSummaryText").innerHTML = summaryText;
+      document.getElementById("hiddenOrderDetails").value = orderItemsString;
+      document.getElementById("hiddenTotalBill").value = "₹" + total;
+      document.getElementById("orderModal").style.display = "flex";
     }
 
-    renderMenu(products);
+    function closeOrderModal() {
+      document.getElementById("orderModal").style.display = "none";
+    }
+
+    // Submit form smoothly without opening another page
+    const form = document.getElementById("orderForm");
+    form.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById("submitBtn");
+      btn.innerText = "Order Bheja Ja Raha Hai...";
+      btn.disabled = true;
+
+      const data = new FormData(form);
+      const action = form.action;
+
+      try {
+        const res = await fetch(action, {
+          method: "POST",
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          alert("Shukriya! Aapka Order Successfully Place Ho Gaya Hai. Triple S Cafe jald hi aapse contact karega!");
+          cart = {};
+          closeOrderModal();
+          renderMenu();
+        } else {
+          alert("Order bhejte waqt kuch problem aayi. Kripya dobara try karein.");
+        }
+      } catch (err) {
+        alert("Net connection check karein!");
+      } finally {
+        btn.innerText = "Confirm Order";
+        btn.disabled = false;
+      }
+    });
+
+    renderMenu();
   </script>
 </body>
 </html>
