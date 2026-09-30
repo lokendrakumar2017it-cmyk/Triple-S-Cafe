@@ -17,7 +17,6 @@
       --accent-gold: #ffb703;
       --gold-gradient: linear-gradient(135deg, #ffd166 0%, #ffb703 100%);
       --dark-hero: #0f172a;
-      --dark-card: #1e293b;
       --veg-green: #00875a;
       --surface: #ffffff;
       --bg-page: #f8fafc;
@@ -39,12 +38,10 @@
     body {
       background-color: var(--bg-page);
       color: var(--text-main);
-      padding-bottom: 110px;
+      padding-bottom: 90px;
     }
 
-    /* ========================================================
-       PREMIUM HERO BANNER & GRAND LOGO SECTION
-       ======================================================== */
+    /* HERO BANNER */
     .hero-banner {
       background: linear-gradient(180deg, #090d16 0%, #111827 70%, #1e293b 100%);
       position: relative;
@@ -57,7 +54,6 @@
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
     }
 
-    /* Ambient Glow Behind Logo */
     .hero-banner::before {
       content: "";
       position: absolute;
@@ -81,7 +77,6 @@
       margin: 0 auto;
     }
 
-    /* Large Logo Frame */
     .logo-frame {
       width: 104px;
       height: 104px;
@@ -109,7 +104,6 @@
       border: 2px solid #ffffff;
     }
 
-    /* Large Bold Typography */
     .brand-name {
       font-family: 'Outfit', sans-serif;
       font-size: 34px;
@@ -142,9 +136,7 @@
       display: inline-block;
     }
 
-    /* ========================================================
-       FLOATING STORE STATS CARD
-       ======================================================== */
+    /* STORE STATS HIGHLIGHTS */
     .store-highlights-wrapper {
       max-width: 680px;
       margin: -24px auto 0;
@@ -203,9 +195,7 @@
       background: #e2e8f0;
     }
 
-    /* ========================================================
-       SEARCH & FILTERS
-       ======================================================== */
+    /* SEARCH SECTION */
     .search-section {
       max-width: 680px;
       margin: 20px auto 0;
@@ -245,9 +235,7 @@
       box-shadow: 0 0 0 4px rgba(255, 56, 92, 0.12);
     }
 
-    /* ========================================================
-       MENU SECTION & STYLISH CARDS
-       ======================================================== */
+    /* MENU SECTION */
     .menu-wrap {
       max-width: 680px;
       margin: 22px auto 0;
@@ -347,7 +335,6 @@
       overflow: hidden;
     }
 
-    /* Media & Floating Qty Selector */
     .dish-media {
       width: 120px;
       display: flex;
@@ -392,11 +379,6 @@
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      transition: background 0.15s;
-    }
-
-    .btn-add-initial:active {
-      background: #fff1f2;
     }
 
     .stepper-btn {
@@ -411,11 +393,6 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background 0.1s;
-    }
-
-    .stepper-btn:active {
-      background: #ffe4e6;
     }
 
     .stepper-val {
@@ -427,8 +404,108 @@
     }
 
     /* ========================================================
-       FLOATING CART ACTION BAR
+       PROFESSIONAL FOOTER & OWNER BRANDING
        ======================================================== */
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      margin-top: 40px;
+      padding: 40px 20px 30px;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .footer-brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #ffffff;
+    }
+
+    .owner-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 13.5px;
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    .owner-badge b {
+      color: var(--accent-gold);
+      font-weight: 800;
+    }
+
+    /* Social Icons Styling */
+    .social-links {
+      display: flex;
+      gap: 14px;
+      margin-top: 4px;
+    }
+
+    .social-icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .social-icon-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-icon-btn.instagram:hover {
+      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+      border-color: transparent;
+    }
+
+    .social-icon-btn.facebook:hover {
+      background: #1877f2;
+      border-color: transparent;
+    }
+
+    .social-icon-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: #ffffff;
+    }
+
+    .footer-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 8px 0;
+    }
+
+    .footer-bottom-text {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* FLOATING BOTTOM CART BAR */
     .cart-float-bar {
       position: fixed;
       bottom: 14px;
@@ -446,24 +523,16 @@
       box-shadow: var(--float-shadow);
       z-index: 99;
       cursor: pointer;
-      animation: popIn 0.25s ease-out;
-    }
-
-    @keyframes popIn {
-      from { transform: scale(0.95); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
     }
 
     .cart-lead-text b {
       font-size: 16px;
       font-weight: 800;
-      letter-spacing: 0.3px;
     }
 
     .cart-lead-text p {
       font-size: 12px;
       opacity: 0.9;
-      margin-top: 1px;
     }
 
     .cart-cta-chip {
@@ -473,15 +542,9 @@
       border-radius: 12px;
       font-size: 14px;
       font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      backdrop-filter: blur(4px);
     }
 
-    /* ========================================================
-       CHECKOUT BOTTOM SHEET (MODAL)
-       ======================================================== */
+    /* CHECKOUT MODAL */
     .checkout-backdrop {
       display: none;
       position: fixed;
@@ -502,13 +565,6 @@
       padding: 24px 20px 32px;
       max-height: 88vh;
       overflow-y: auto;
-      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
-      animation: slideUpModal 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes slideUpModal {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
     }
 
     .sheet-title-row {
@@ -524,7 +580,6 @@
       font-family: 'Outfit', sans-serif;
       font-size: 20px;
       font-weight: 800;
-      color: var(--text-main);
     }
 
     .sheet-close-btn {
@@ -534,9 +589,7 @@
       height: 34px;
       border-radius: 50%;
       font-size: 16px;
-      font-weight: 700;
       cursor: pointer;
-      color: #64748b;
     }
 
     .invoice-card {
@@ -581,7 +634,6 @@
       color: #475569;
       margin-bottom: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .input-field input, .input-field textarea {
@@ -592,12 +644,6 @@
       font-size: 14px;
       font-weight: 600;
       outline: none;
-      transition: border 0.15s;
-    }
-
-    .input-field input:focus, .input-field textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.1);
     }
 
     .btn-submit-order {
@@ -610,21 +656,12 @@
       font-size: 16px;
       font-weight: 800;
       cursor: pointer;
-      box-shadow: var(--float-shadow);
-      margin-top: 6px;
-      transition: transform 0.15s;
-    }
-
-    .btn-submit-order:active {
-      transform: scale(0.98);
     }
   </style>
 </head>
 <body>
 
-  <!-- ========================================================
-       TOP HERO BANNER: LARGE LOGO & BOLD TYPOGRAPHY
-       ======================================================== -->
+  <!-- HERO SECTION -->
   <section class="hero-banner">
     <div class="brand-hero-content">
       <div class="logo-frame">
@@ -634,12 +671,12 @@
       <h1 class="brand-name">Triple S Cafe</h1>
       <div class="brand-subtext">
         <span class="live-pulse"></span>
-        <span>Hot & Fresh Fast Food • Fast Doorstep Delivery</span>
+        <span>Hot & Fresh Fast Food • Doorstep Delivery</span>
       </div>
     </div>
   </section>
 
-  <!-- STORE STATS HIGHLIGHTS -->
+  <!-- STORE STATS -->
   <div class="store-highlights-wrapper">
     <div class="store-highlights">
       <div class="highlight-pill">
@@ -668,7 +705,7 @@
     </div>
   </div>
 
-  <!-- SEARCH SECTION -->
+  <!-- SEARCH -->
   <div class="search-section">
     <div class="search-box-inner">
       <span class="search-icon">🔍</span>
@@ -685,7 +722,45 @@
     <div id="foodListContainer"></div>
   </main>
 
-  <!-- FLOATING BOTTOM CHECKOUT ACTION -->
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">Triple S Cafe</div>
+      
+      <!-- Owner Tag -->
+      <div class="owner-badge">
+        <span>👨‍🍳 Owned & Managed by:</span>
+        <b>Shubham</b>
+      </div>
+
+      <!-- Social Media Buttons -->
+      <div class="social-links">
+        <!-- Instagram Link -->
+        <a href="https://instagram.com" target="_blank" class="social-icon-btn instagram" title="Follow us on Instagram">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </a>
+
+        <!-- Facebook Link -->
+        <a href="https://facebook.com" target="_blank" class="social-icon-btn facebook" title="Find us on Facebook">
+          <svg viewBox="0 0 24 24">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <!-- Copyright & Disclaimer -->
+      <div class="footer-bottom-text">
+        <p>© 2026 <b>Triple S Cafe</b>. All Rights Reserved.</p>
+        <p style="margin-top: 4px; opacity: 0.7;">Made with 100% fresh ingredients & hygiene standards.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING CART BAR -->
   <aside class="cart-float-bar" id="cartFloatBar" style="display: none;" onclick="openCheckoutModal()">
     <div class="cart-lead-text">
       <b id="cartLeadTotal">0 ITEMS | ₹0</b>
@@ -696,7 +771,7 @@
     </div>
   </aside>
 
-  <!-- CHECKOUT MODAL (BOTTOM SHEET) -->
+  <!-- CHECKOUT MODAL -->
   <div class="checkout-backdrop" id="checkoutBackdrop">
     <div class="checkout-sheet">
       <div class="sheet-title-row">
@@ -704,7 +779,6 @@
         <button class="sheet-close-btn" onclick="closeCheckoutModal()">✕</button>
       </div>
 
-      <!-- Live Calculation Breakdown -->
       <div class="invoice-card">
         <div id="invoiceItemsListing"></div>
         <div class="invoice-item-row delivery-row" style="margin-top: 8px;">
@@ -717,7 +791,6 @@
         </div>
       </div>
 
-      <!-- Form Submission -->
       <form id="orderForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
         <input type="hidden" name="Order_Details" id="hiddenOrderDetails">
         <input type="hidden" name="Total_Amount" id="hiddenTotalAmount">
@@ -928,12 +1001,10 @@
       document.getElementById('checkoutBackdrop').style.display = 'none';
     }
 
-    // Modal dismiss on backdrop click
     document.getElementById('checkoutBackdrop').addEventListener('click', function(e) {
       if (e.target === this) closeCheckoutModal();
     });
 
-    // Form Submission Handler
     const orderFormElement = document.getElementById('orderForm');
     orderFormElement.addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -965,7 +1036,6 @@
       }
     });
 
-    // Initial render
     renderMenuCatalog();
   </script>
 </body>
