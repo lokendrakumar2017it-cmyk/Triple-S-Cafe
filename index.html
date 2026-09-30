@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Triple S Cafe - Kirana & Fast Food</title>
+  <style>
+    :root {
+      --primary: #e63946;
+      --secondary: #1d3557;
+      --light-bg: #f8f9fa;
+      --card-bg: #ffffff;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      background-color: var(--light-bg);
+      color: #333;
+      padding-bottom: 95px;
+    }
+    header {
+      background: linear-gradient(135deg, var(--secondary), #0d1b2a);
+      color: white;
+      text-align: center;
+      padding: 22px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    header h1 {
+      font-size: 24px;
+      color: #ffb703;
+      letter-spacing: 1px;
+    }
+    header p {
+      font-size: 13px;
+      color: #e0e1dd;
+      margin-top: 4px;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 10px;
+      background: white;
+      position: sticky;
+      top: 80px;
+      z-index: 90;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .tab-btn {
+      padding: 8px 16px;
+      border: 1px solid #ccc;
+      background: white;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid #eee;
+    }
+    .tag {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      width: fit-content;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    .tag-food { background: #ffe3e3; color: #c92a2a; }
+    .tag-kirana { background: #d3f9d8; color: #2b8a3e; }
+    .item-name {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .item-desc {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+    .price-action {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+    .price {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+    .add-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .cart-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+    .checkout-btn {
+      background: #25d366;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>TRIPLE S CAFE</h1>
+    <p>Fresh Fast Food & Kirana Essentials | Direct WhatsApp Order</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="filterMenu('all')">Sabhi Items</button>
+    <button class="tab-btn" onclick="filterMenu('fastfood')">🍔 Fast Food</button>
+    <button class="tab-btn" onclick="filterMenu('kirana')">🛒 Kirana</button>
+  </div>
+
+  <div class="container">
+    <div class="items-grid" id="menuGrid"></div>
+  </div>
+
+  <div class="cart-bar" id="cartBar" style="display: none;">
+    <div>
+      <b><span id="totalItems">0</span> Items</b> | ₹<span id="totalPrice">0</span>
+    </div>
+    <button class="checkout-btn" onclick="orderOnWhatsApp()">
+      WhatsApp Order 📲
+    </button>
+  </div>
+
+  <script>
+    // YAHA APNA WHATSAPP NUMBER DALEIN (Country code 91 ke sath)
+    const SHOP_WHATSAPP_NUMBER = "91XXXXXXXXXX"; 
+
+    const products = [
+      { id: 1, category: 'fastfood', name: 'Veg Crispy Burger', desc: 'Fresh patty with cheese & mayo', price: 60 },
+      { id: 2, category: 'fastfood', name: 'Veg Chowmein', desc: 'Desi style noodles', price: 70 },
+      { id: 3, category: 'fastfood', name: 'Paneer Cheese Roll', desc: 'Loaded paneer with spices', price: 90 },
+      { id: 4, category: 'fastfood', name: 'French Fries', desc: 'Crispy salted fries', price: 50 },
+      { id: 5, category: 'fastfood', name: 'Cold Coffee', desc: 'Thick chilled coffee', price: 40 },
+      { id: 6, category: 'kirana', name: 'Aashirvaad Atta (5kg)', desc: 'Whole wheat flour', price: 230 },
+      { id: 7, category: 'kirana', name: 'Fortune Mustard Oil (1L)', desc: 'Kachi ghani pure oil', price: 145 },
+      { id: 8, category: 'kirana', name: 'Tata Tea Gold (250g)', desc: 'Rich blend leaf tea', price: 120 },
+      { id: 9, category: 'kirana', name: 'Maggi (Pack of 4)', desc: 'Instant noodles', price: 56 },
+      { id: 10, category: 'kirana', name: 'Amul Butter (100g)', desc: 'Salted butter', price: 58 }
+    ];
+
+    let cart = {};
+
+    function renderMenu(items) {
+      const grid = document.getElementById('menuGrid');
+      grid.innerHTML = '';
+      items.forEach(item => {
+        const isFood = item.category === 'fastfood';
+        grid.innerHTML += `
+          <div class="card">
+            <div>
+              <span class="tag ${isFood ? 'tag-food' : 'tag-kirana'}">
+                ${isFood ? 'Fast Food' : 'Kirana'}
+              </span>
+              <div class="item-name">${item.name}</div>
+              <div class="item-desc">${item.desc}</div>
+            </div>
+            <div class="price-action">
+              <span class="price">₹${item.price}</span>
+              <button class="add-btn" onclick="addToCart(${item.id})">+ Add</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function filterMenu(cat) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      if (cat === 'all') {
+        renderMenu(products);
+      } else {
+        renderMenu(products.filter(p => p.category === cat));
+      }
+    }
+
+    function addToCart(id) {
+      cart[id] = (cart[id] || 0) + 1;
+      updateCartDisplay();
+    }
+
+    function updateCartDisplay() {
+      let count = 0, total = 0;
+      for (const id in cart) {
+        const item = products.find(p => p.id == id);
+        count += cart[id];
+        total += item.price * cart[id];
+      }
+      if (count > 0) {
+        document.getElementById('cartBar').style.display = 'flex';
+        document.getElementById('totalItems').innerText = count;
+        document.getElementById('totalPrice').innerText = total;
+      } else {
+        document.getElementById('cartBar').style.display = 'none';
+      }
+    }
+
+    function orderOnWhatsApp() {
+      let message = "Namaste Triple S Cafe! Mujhe order place karna hai:\n\n";
+      let total = 0;
+      for (const id in cart) {
+        const item = products.find(p => p.id == id);
+        const subtotal = item.price * cart[id];
+        message += `• ${item.name} x ${cart[id]} = ₹${subtotal}\n`;
+        total += subtotal;
+      }
+      message += `\n*Total Bill: ₹${total}*`;
+      message += `\n\nMera Delivery Address: `;
+      window.open(`https://wa.me/${8445656674}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    renderMenu(products);
+  </script>
+</body>
+</html>
