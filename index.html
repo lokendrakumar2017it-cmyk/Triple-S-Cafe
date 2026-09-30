@@ -3,387 +3,500 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Triple S Cafe - Order Fast Food Online</title>
+  <title>Triple S Cafe - Fresh Fast Food Order</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#e63946',
+              dark: '#1d3557',
+              accent: '#ffb703',
+              green: '#2a9d8f'
+            }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    :root {
-      --primary: #d90429;
-      --secondary: #2b2d42;
-      --accent: #ffb703;
-      --bg: #f8f9fa;
-      --card: #ffffff;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
+    /* Custom scrollbar and modal styling */
     body {
-      background-color: var(--bg);
-      color: #333;
-      padding-bottom: 110px;
+      -webkit-tap-highlight-color: transparent;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
-    header {
-      background: linear-gradient(135deg, var(--secondary), #111);
-      color: white;
-      text-align: center;
-      padding: 24px 16px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
     }
-    header h1 {
-      font-size: 26px;
-      color: var(--accent);
-      letter-spacing: 1px;
-    }
-    header p {
-      font-size: 13px;
-      color: #edf2f4;
-      margin-top: 4px;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-    .section-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--secondary);
-    }
-    .items-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .item-card {
-      background: var(--card);
-      border-radius: 12px;
-      padding: 14px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      border: 1px solid #e9ecef;
-    }
-    .item-info h3 {
-      font-size: 16px;
-      color: #222;
-      margin-bottom: 4px;
-    }
-    .item-price {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--primary);
-    }
-    .qty-control {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .qty-btn {
-      background: #f1f3f5;
-      border: 1px solid #ced4da;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .qty-btn:active {
-      background: #dee2e6;
-    }
-    .qty-text {
-      font-weight: 700;
-      min-width: 18px;
-      text-align: center;
-    }
-
-    /* Bottom Floating Bar */
-    .cart-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: white;
-      box-shadow: 0 -4px 16px rgba(0,0,0,0.12);
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 99;
-    }
-    .order-now-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 25px;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    /* Modal Form Overlay */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.6);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
-    .modal-content {
-      background: white;
-      border-radius: 14px;
-      padding: 22px;
-      width: 100%;
-      max-width: 450px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    .modal h2 {
-      font-size: 20px;
-      margin-bottom: 12px;
-      color: var(--secondary);
-    }
-    .form-group {
-      margin-bottom: 12px;
-    }
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .form-group input, .form-group textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ced4da;
-      border-radius: 8px;
-      font-size: 14px;
-    }
-    .order-summary {
-      background: #f8f9fa;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 14px;
-      font-size: 13px;
-    }
-    .submit-order-btn {
-      width: 100%;
-      background: #2b8a3e;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .close-btn {
-      background: none;
-      border: none;
-      font-size: 14px;
-      color: #666;
-      width: 100%;
-      margin-top: 10px;
-      cursor: pointer;
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
     }
   </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen pb-32">
 
-  <header>
-    <h1>TRIPLE S CAFE</h1>
-    <p>Garam & Fresh Fast Food | Instant Home Delivery</p>
+  <!-- Header Bar -->
+  <header class="sticky top-0 z-40 bg-gradient-to-r from-slate-900 via-zinc-900 to-red-950 text-white shadow-lg border-b border-red-900/30">
+    <div class="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-brand-red flex items-center justify-center text-white font-black text-xl shadow-md border-2 border-brand-accent">
+          3S
+        </div>
+        <div>
+          <h1 class="text-lg font-black tracking-wide text-brand-accent flex items-center gap-1.5">
+            TRIPLE S CAFE
+            <span class="text-[10px] bg-red-600 text-white font-semibold px-2 py-0.5 rounded-full uppercase">Fast Food</span>
+          </h1>
+          <p class="text-xs text-slate-300">Garam & Taza Fast Food | Home Delivery</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 text-xs font-semibold bg-emerald-950/80 border border-emerald-600/40 text-emerald-300 px-2.5 py-1 rounded-full">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        Open Now
+      </div>
+    </div>
   </header>
 
-  <div class="container">
-    <div class="section-title">Menu List</div>
-    <div class="items-list" id="menuList"></div>
+  <!-- Notice / Quick Offer Banner -->
+  <div class="bg-amber-500/10 border-b border-amber-500/20 py-2 px-4 text-center">
+    <p class="text-xs md:text-sm font-medium text-amber-900">
+      ⚡ <span class="font-bold">Fast Delivery:</span> Order karne par taza garma-garam taiyar karke deliver kiya jayega!
+    </p>
   </div>
 
-  <!-- Bottom Floating Bar -->
-  <div class="cart-bar" id="cartBar" style="display: none;">
-    <div>
-      <b><span id="cartCount">0</span> Items</b> | Total: <b>₹<span id="cartTotal">0</span></b>
+  <!-- Menu Container -->
+  <main class="max-w-2xl mx-auto px-4 pt-5">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-utensils text-brand-red"></i>
+        Hamari Fast Food Menu
+      </h2>
+      <span class="text-xs bg-slate-200 text-slate-700 px-2.5 py-0.5 rounded-full font-medium" id="itemCountBadge">7 Items</span>
     </div>
-    <button class="order-now-btn" onclick="openOrderModal()">Order Karein ➔</button>
+
+    <!-- Product Grid -->
+    <div id="foodGrid" class="space-y-3.5">
+      <!-- Items dynamically injected by JavaScript -->
+    </div>
+  </main>
+
+  <!-- Bottom Sticky Cart Action Bar -->
+  <div id="bottomCartBar" class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-2xl p-3.5 transition-all duration-300 transform translate-y-full opacity-0">
+    <div class="max-w-2xl mx-auto flex items-center justify-between gap-3">
+      <div class="flex flex-col">
+        <span class="text-xs text-slate-500 font-medium">Kul Rakam (Total)</span>
+        <div class="flex items-baseline gap-2">
+          <span class="text-xl font-black text-slate-900">₹<span id="cartTotalPrice">0</span></span>
+          <span class="text-xs text-emerald-600 font-semibold">(<span id="cartTotalItems">0</span> items)</span>
+        </div>
+      </div>
+      <button onclick="openOrderModal()" class="flex-1 max-w-[220px] bg-brand-red hover:bg-red-700 active:scale-95 text-white font-bold py-3 px-5 rounded-xl shadow-lg shadow-red-600/30 flex items-center justify-center gap-2 transition duration-150">
+        <span>Order Karein</span>
+        <i class="fa-solid fa-arrow-right text-xs"></i>
+      </button>
+    </div>
   </div>
 
-  <!-- Order Details Popup Modal -->
-  <div class="modal" id="orderModal">
-    <div class="modal-content">
-      <h2>Delivery Details</h2>
-      <div class="order-summary" id="orderSummaryText"></div>
+  <!-- Direct On-Site Order Modal -->
+  <div id="orderModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col max-h-[92vh]">
+      <!-- Modal Header -->
+      <div class="bg-slate-900 text-white p-4 flex items-center justify-between border-b border-slate-800">
+        <div>
+          <h3 class="font-bold text-base text-brand-accent">Delivery Details</h3>
+          <p class="text-xs text-slate-400">Apna pata bharein aur order confirm karein</p>
+        </div>
+        <button onclick="closeOrderModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center text-sm">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
 
-      <!-- Free Formspree Form: Order data aapke email par aayega -->
-      <form id="orderForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
-        <input type="hidden" name="Order_Details" id="hiddenOrderDetails">
-        <input type="hidden" name="Total_Bill" id="hiddenTotalBill">
-
-        <div class="form-group">
-          <label>Aapka Naam</label>
-          <input type="text" name="Customer_Name" required placeholder="E.g. Rahul Sharma">
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-4 overflow-y-auto custom-scrollbar space-y-4">
+        <!-- Order Bill Summary -->
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+          <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Order Ki List</h4>
+          <div id="modalOrderSummary" class="divide-y divide-slate-200/80 text-sm space-y-1.5">
+            <!-- Summary Items rendered here -->
+          </div>
+          <div class="border-t border-slate-300 mt-2.5 pt-2 flex justify-between items-center font-bold text-slate-900">
+            <span>Kul Bill (Payable)</span>
+            <span class="text-base text-brand-red font-black">₹<span id="modalTotalAmount">0</span></span>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label>Mobile Number</label>
-          <input type="tel" name="Customer_Phone" required placeholder="E.g. 9876543210">
-        </div>
+        <!-- Customer Inputs Form -->
+        <form id="directOrderForm" onsubmit="handleOrderSubmission(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Aapka Naam <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">
+                <i class="fa-solid fa-user"></i>
+              </span>
+              <input type="text" id="custName" required placeholder="Apna pura naam likhein" class="w-full text-sm pl-9 pr-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-brand-red" />
+            </div>
+          </div>
 
-        <div class="form-group">
-          <label>Delivery Address</label>
-          <textarea name="Customer_Address" rows="3" required placeholder="Ghar ka number, gali/road, landmark"></textarea>
-        </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Mobile Number (Calling & WhatsApp) <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">
+                <i class="fa-solid fa-phone"></i>
+              </span>
+              <input type="tel" id="custPhone" pattern="[0-9]{10}" required placeholder="10 digit ka mobile number" class="w-full text-sm pl-9 pr-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-brand-red" />
+            </div>
+          </div>
 
-        <div class="form-group">
-          <label>Payment Mode</label>
-          <input type="text" name="Payment_Mode" value="Cash / UPI on Delivery" readonly>
-        </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Poora Delivery Address <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <textarea id="custAddress" required rows="2" placeholder="Ghar ka number, gali/road, nazdeeki landmark..." class="w-full text-sm p-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-brand-red"></textarea>
+            </div>
+          </div>
 
-        <button type="submit" class="submit-order-btn" id="submitBtn">Confirm Order</button>
-        <button type="button" class="close-btn" onclick="closeOrderModal()">Cancel</button>
-      </form>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Payment Ka Tarika</label>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <label class="flex items-center gap-2 p-2.5 rounded-lg border border-emerald-500 bg-emerald-50/60 font-medium text-emerald-900 cursor-pointer">
+                <input type="radio" name="paymentMethod" value="Cash on Delivery" checked class="text-brand-red focus:ring-brand-red" />
+                <span>Cash on Delivery</span>
+              </label>
+              <label class="flex items-center gap-2 p-2.5 rounded-lg border border-slate-200 bg-slate-50 font-medium text-slate-700 cursor-pointer">
+                <input type="radio" name="paymentMethod" value="UPI on Delivery" class="text-brand-red focus:ring-brand-red" />
+                <span>UPI on Delivery</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-2">
+            <button type="submit" id="submitOrderBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>Confirm & Place Order</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Message Modal -->
+  <div id="successModal" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white w-full max-w-sm rounded-2xl p-6 text-center shadow-2xl">
+      <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <h3 class="text-xl font-black text-slate-800 mb-1">Order Ho Gaya!</h3>
+      <p class="text-xs text-slate-600 mb-4">
+        Aapka order <span class="font-bold text-slate-800">Triple S Cafe</span> ko prapt ho gaya hai. Hum jald hi aapke diye mobile number par sampark karke delivery bhej rahe hain.
+      </p>
+
+      <div class="bg-slate-100 rounded-xl p-3 text-left text-xs text-slate-700 space-y-1 mb-5" id="confirmedOrderBox">
+        <!-- Injected details -->
+      </div>
+
+      <button onclick="closeSuccessModal()" class="w-full bg-slate-900 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-black text-sm transition">
+        Theek Hai (OK)
+      </button>
     </div>
   </div>
 
   <script>
-    // Fast Food Menu Items
-    const menuItems = [
-      { id: 1, name: "Patties", price: 30 },
-      { id: 2, name: "Burger", price: 40 },
-      { id: 3, name: "Stuffed Patties", price: 40 },
-      { id: 4, name: "Chowmein (Half Plate)", price: 30 },
-      { id: 5, name: "Chowmein (Full Plate)", price: 70 },
-      { id: 6, name: "Chilli Potato", price: 70 },
-      { id: 7, name: "Maggi", price: 50 }
+    // Fast food items with custom images matching your requirements
+    const fastFoodItems = [
+      {
+        id: 1,
+        name: "Patties",
+        price: 30,
+        desc: "Khasta aur crunchy potato filling wali taza patties",
+        badge: "Crispy",
+        image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=500&q=80",
+        fallback: "https://placehold.co/400x300/e63946/ffffff?text=Crispy+Patties"
+      },
+      {
+        id: 2,
+        name: "Burger",
+        price: 40,
+        desc: "Garam aloo tikki, creamy mayo aur crunchy veggies",
+        badge: "Popular",
+        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80",
+        fallback: "https://placehold.co/400x300/e63946/ffffff?text=Veg+Burger"
+      },
+      {
+        id: 3,
+        name: "Stuffed Patties",
+        price: 40,
+        desc: "Special masala stuffed patties loaded with fillings",
+        badge: "Special",
+        image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=80",
+        fallback: "https://placehold.co/400x300/e63946/ffffff?text=Stuffed+Patties"
+      },
+      {
+        id: 4,
+        name: "Chowmein (Half Plate)",
+        price: 30,
+        desc: "Spicy desi-style stir-fried half portion noodles",
+        badge: "Half Plate",
+        image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=500&q=80",
+        fallback: "https://placehold.co/400x300/e63946/ffffff?text=Half+Chowmein"
+      },
+      {
+        id: 5,
+        name: "Chowmein (Full Plate)",
+        price: 70,
+        desc: "Bhari hui plate spicy desi noodles crunchy veggies ke sath",
+        badge: "Full Plate",
+        image: "https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=500&q=80",
+        fallback: "https://placehold.co/400x300/e63946/ffffff?text=Full+Chowmein"
+      },
+      {
+        id: 6,
+        name: "Chilli Potato",
+        price: 70,
+        desc: "Crispy fried potatoes tossed with sweet & spicy sauces",
+        badge: "Hot & Spicy",
+        image: "https://images.unsplash.com/photo-1576107232684-1279f3908594?auto=format&fit=crop&w=500&q=80",
+        fallback: "https://placehold.co/400x300/e63946/ffffff?text=Chilli+Potato"
+      },
+      {
+        id: 7,
+        name: "Maggi",
+        price: 50,
+        desc: "Garma-garam 2-minute desi masala vegetable Maggi",
+        badge: "Favourite",
+        image: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=500&q=80",
+        fallback: "https://placehold.co/400x300/e63946/ffffff?text=Masala+Maggi"
+      }
     ];
 
+    // State management for Cart: { [itemId]: quantity }
     let cart = {};
 
-    function renderMenu() {
-      const container = document.getElementById("menuList");
-      container.innerHTML = "";
+    function renderFoodItems() {
+      const grid = document.getElementById("foodGrid");
+      grid.innerHTML = "";
 
-      menuItems.forEach(item => {
+      fastFoodItems.forEach(item => {
         const qty = cart[item.id] || 0;
-        container.innerHTML += `
-          <div class="item-card">
-            <div class="item-info">
-              <h3>${item.name}</h3>
-              <div class="item-price">₹${item.price}</div>
+        
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-2xl p-3 shadow-sm hover:shadow-md border border-slate-200/80 flex items-center justify-between gap-3.5 transition duration-150";
+
+        card.innerHTML = `
+          <!-- Image with fallback -->
+          <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden shrink-0 bg-slate-100 border border-slate-100">
+            <img 
+              src="${item.image}" 
+              alt="${item.name}" 
+              onerror="this.onerror=null; this.src='${item.fallback}';"
+              loading="lazy"
+              class="w-full h-full object-cover transform hover:scale-105 transition duration-300"
+            />
+            <span class="absolute top-1 left-1 bg-black/70 backdrop-blur-sm text-brand-accent text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+              ${item.badge}
+            </span>
+          </div>
+
+          <!-- Product Details -->
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1.5">
+              <span class="w-3 h-3 border border-emerald-600 flex items-center justify-center p-0.5 rounded-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+              </span>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900 truncate">${item.name}</h3>
             </div>
-            <div class="qty-control">
-              <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
-              <span class="qty-text">${qty}</span>
-              <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
-            </div>
+            <p class="text-[11px] sm:text-xs text-slate-500 line-clamp-2 mt-0.5 leading-snug">${item.desc}</p>
+            <div class="mt-2 text-base font-black text-slate-900">₹${item.price}</div>
+          </div>
+
+          <!-- Quantity / Add Buttons -->
+          <div class="shrink-0 flex flex-col items-end justify-center">
+            ${
+              qty === 0 
+              ? `<button onclick="updateItemQuantity(${item.id}, 1)" class="bg-red-50 hover:bg-brand-red text-brand-red hover:text-white border border-brand-red/30 hover:border-brand-red font-bold text-xs px-4 py-2 rounded-xl transition shadow-sm active:scale-95 flex items-center gap-1">
+                  <span>ADD</span>
+                  <i class="fa-solid fa-plus text-[10px]"></i>
+                 </button>`
+              : `<div class="flex items-center bg-slate-100 border border-slate-300 rounded-xl p-0.5 shadow-inner">
+                  <button onclick="updateItemQuantity(${item.id}, -1)" class="w-7 h-7 flex items-center justify-center rounded-lg bg-white text-slate-700 hover:bg-slate-200 active:scale-90 font-bold text-xs transition">
+                    <i class="fa-solid fa-minus"></i>
+                  </button>
+                  <span class="w-7 text-center font-black text-xs text-slate-900">${qty}</span>
+                  <button onclick="updateItemQuantity(${item.id}, 1)" class="w-7 h-7 flex items-center justify-center rounded-lg bg-brand-red text-white hover:bg-red-700 active:scale-90 font-bold text-xs transition">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                 </div>`
+            }
           </div>
         `;
+        grid.appendChild(card);
       });
+
       updateCartBar();
     }
 
-    function changeQty(id, delta) {
+    function updateItemQuantity(id, delta) {
       const current = cart[id] || 0;
-      const updated = current + delta;
-      if (updated > 0) {
-        cart[id] = updated;
+      const next = current + delta;
+      if (next > 0) {
+        cart[id] = next;
       } else {
         delete cart[id];
       }
-      renderMenu();
+      renderFoodItems();
+    }
+
+    function calculateCartTotals() {
+      let totalItems = 0;
+      let totalPrice = 0;
+
+      for (const id in cart) {
+        const item = fastFoodItems.find(f => f.id == id);
+        if (item) {
+          totalItems += cart[id];
+          totalPrice += item.price * cart[id];
+        }
+      }
+      return { totalItems, totalPrice };
     }
 
     function updateCartBar() {
-      let count = 0;
-      let total = 0;
-      for (let id in cart) {
-        const item = menuItems.find(i => i.id == id);
-        count += cart[id];
-        total += item.price * cart[id];
-      }
-      if (count > 0) {
-        document.getElementById("cartBar").style.display = "flex";
-        document.getElementById("cartCount").innerText = count;
-        document.getElementById("cartTotal").innerText = total;
+      const { totalItems, totalPrice } = calculateCartTotals();
+      const cartBar = document.getElementById("bottomCartBar");
+
+      if (totalItems > 0) {
+        document.getElementById("cartTotalItems").innerText = totalItems;
+        document.getElementById("cartTotalPrice").innerText = totalPrice;
+        cartBar.classList.remove("translate-y-full", "opacity-0");
+        cartBar.classList.add("translate-y-0", "opacity-100");
       } else {
-        document.getElementById("cartBar").style.display = "none";
+        cartBar.classList.add("translate-y-full", "opacity-0");
+        cartBar.classList.remove("translate-y-0", "opacity-100");
       }
     }
 
     function openOrderModal() {
-      let summaryText = "";
-      let orderItemsString = "";
-      let total = 0;
+      const { totalItems, totalPrice } = calculateCartTotals();
+      if (totalItems === 0) return;
 
-      for (let id in cart) {
-        const item = menuItems.find(i => i.id == id);
-        const subtotal = item.price * cart[id];
-        summaryText += `${item.name} x ${cart[id]} = ₹${subtotal}<br>`;
-        orderItemsString += `${item.name} (${cart[id]} qty), `;
-        total += subtotal;
+      const summaryContainer = document.getElementById("modalOrderSummary");
+      summaryContainer.innerHTML = "";
+
+      for (const id in cart) {
+        const item = fastFoodItems.find(f => f.id == id);
+        const qty = cart[id];
+        const lineTotal = item.price * qty;
+
+        const row = document.createElement("div");
+        row.className = "flex justify-between items-center py-1";
+        row.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-slate-800">${item.name}</span>
+            <span class="text-xs text-slate-500">x ${qty}</span>
+          </div>
+          <span class="font-semibold text-slate-800">₹${lineTotal}</span>
+        `;
+        summaryContainer.appendChild(row);
       }
 
-      summaryText += `<b>Total Bill: ₹${total}</b>`;
-      document.getElementById("orderSummaryText").innerHTML = summaryText;
-      document.getElementById("hiddenOrderDetails").value = orderItemsString;
-      document.getElementById("hiddenTotalBill").value = "₹" + total;
-      document.getElementById("orderModal").style.display = "flex";
+      document.getElementById("modalTotalAmount").innerText = totalPrice;
+      const modal = document.getElementById("orderModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
     }
 
     function closeOrderModal() {
-      document.getElementById("orderModal").style.display = "none";
+      const modal = document.getElementById("orderModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
     }
 
-    // Submit form smoothly without opening another page
-    const form = document.getElementById("orderForm");
-    form.addEventListener("submit", async function(e) {
+    function handleOrderSubmission(e) {
       e.preventDefault();
-      const btn = document.getElementById("submitBtn");
-      btn.innerText = "Order Bheja Ja Raha Hai...";
-      btn.disabled = true;
+      
+      const submitBtn = document.getElementById("submitOrderBtn");
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i><span>Order Save Ho Raha Hai...</span>`;
 
-      const data = new FormData(form);
-      const action = form.action;
+      const name = document.getElementById("custName").value.trim();
+      const phone = document.getElementById("custPhone").value.trim();
+      const address = document.getElementById("custAddress").value.trim();
+      const paymentMode = document.querySelector('input[name="paymentMethod"]:checked').value;
+      const { totalItems, totalPrice } = calculateCartTotals();
 
-      try {
-        const res = await fetch(action, {
-          method: "POST",
-          body: data,
-          headers: { 'Accept': 'application/json' }
-        });
-        if (res.ok) {
-          alert("Shukriya! Aapka Order Successfully Place Ho Gaya Hai. Triple S Cafe jald hi aapse contact karega!");
-          cart = {};
-          closeOrderModal();
-          renderMenu();
-        } else {
-          alert("Order bhejte waqt kuch problem aayi. Kripya dobara try karein.");
-        }
-      } catch (err) {
-        alert("Net connection check karein!");
-      } finally {
-        btn.innerText = "Confirm Order";
-        btn.disabled = false;
+      // Collect items summary
+      let itemsListArray = [];
+      for (const id in cart) {
+        const item = fastFoodItems.find(f => f.id == id);
+        itemsListArray.push(`${item.name} (${cart[id]} qty)`);
       }
-    });
 
-    renderMenu();
+      const orderData = {
+        orderId: "3S-" + Math.floor(100000 + Math.random() * 900000),
+        customerName: name,
+        phone: phone,
+        address: address,
+        paymentMode: paymentMode,
+        items: itemsListArray,
+        totalItems: totalItems,
+        totalPrice: totalPrice,
+        time: new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      // Store in local browser storage so the store owner can access past orders if needed
+      try {
+        const existingOrders = JSON.parse(localStorage.getItem("tripleS_orders") || "[]");
+        existingOrders.unshift(orderData);
+        localStorage.setItem("tripleS_orders", JSON.stringify(existingOrders));
+      } catch (err) {
+        console.error("Storage error:", err);
+      }
+
+      setTimeout(() => {
+        // Reset state and close modal
+        closeOrderModal();
+        showSuccessModal(orderData);
+
+        // Reset cart and form
+        cart = {};
+        document.getElementById("directOrderForm").reset();
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i><span>Confirm & Place Order</span>`;
+        renderFoodItems();
+      }, 700);
+    }
+
+    function showSuccessModal(order) {
+      const confirmedBox = document.getElementById("confirmedOrderBox");
+      confirmedBox.innerHTML = `
+        <p><b>Order ID:</b> <span class="text-brand-red font-mono">${order.orderId}</span></p>
+        <p><b>Grahak:</b> ${order.customerName} (${order.phone})</p>
+        <p><b>Items:</b> ${order.items.join(", ")}</p>
+        <p><b>Total Bill:</b> ₹${order.totalPrice} (${order.paymentMode})</p>
+        <p><b>Pata:</b> ${order.address}</p>
+      `;
+
+      const modal = document.getElementById("successModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeSuccessModal() {
+      const modal = document.getElementById("successModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    // Initial render
+    window.addEventListener("DOMContentLoaded", () => {
+      renderFoodItems();
+    });
   </script>
 </body>
 </html>
