@@ -63,7 +63,7 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      border: 2px solid rgba(34, 197, 94, 0.4);
+      border: 2px solid rgba(12, 131, 31, 0.45);
       animation: ripple 2s cubic-bezier(0.1, 0.2, 0.3, 1) infinite;
     }
 
@@ -75,15 +75,16 @@
       animation-delay: 1.2s;
     }
 
+    /* Blinkit Dark Green Radar Icon */
     .radar-center-icon {
       width: 60px;
       height: 60px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #10b981, #059669);
+      background: linear-gradient(135deg, #0c831f, #096317);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 25px rgba(34, 197, 94, 0.6);
+      box-shadow: 0 0 25px rgba(12, 131, 31, 0.6);
       z-index: 2;
     }
 
@@ -272,9 +273,9 @@
       box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
     }
 
-    /* UPDATED: Green Cut/Cart Action Button */
+    /* BLINKIT DARK GREEN ACTION BUTTON */
     .btn-cut {
-      background: linear-gradient(135deg, #22c55e, #16a34a);
+      background: linear-gradient(135deg, #0c831f, #096317);
       width: 48px;
       height: 48px;
       border-radius: 50%;
@@ -284,8 +285,13 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 6px 18px rgba(34, 197, 94, 0.5);
-      transition: transform 0.2s ease;
+      box-shadow: 0 6px 18px rgba(12, 131, 31, 0.55);
+      transition: all 0.2s ease;
+    }
+
+    .btn-cut:hover {
+      background: linear-gradient(135deg, #0f9f26, #0c831f);
+      box-shadow: 0 8px 22px rgba(12, 131, 31, 0.7);
     }
 
     .btn-cut:active {
@@ -299,7 +305,7 @@
       transform: rotate(135deg);
     }
 
-    /* Thank You Screen Card with Green Accent */
+    /* Thank You Screen Card with Blinkit Green Accents */
     .thankyou-screen {
       position: absolute;
       top: 0;
@@ -322,9 +328,9 @@
       border-radius: 28px;
       max-width: 360px;
       width: 100%;
-      border: 1px solid rgba(34, 197, 94, 0.3);
+      border: 1px solid rgba(12, 131, 31, 0.4);
       backdrop-filter: blur(16px);
-      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7), 0 0 25px rgba(34, 197, 94, 0.15);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7), 0 0 25px rgba(12, 131, 31, 0.2);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -334,18 +340,18 @@
     .heart-icon {
       width: 64px;
       height: 64px;
-      background: rgba(34, 197, 94, 0.15);
+      background: rgba(12, 131, 31, 0.18);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+      box-shadow: 0 0 20px rgba(12, 131, 31, 0.35);
     }
 
     .heart-icon svg {
       width: 32px;
       height: 32px;
-      fill: #22c55e;
+      fill: #0c831f;
     }
 
     .thankyou-title {
@@ -356,7 +362,7 @@
     }
 
     .thankyou-title span {
-      background: linear-gradient(135deg, #22c55e, #4ade80);
+      background: linear-gradient(135deg, #0c831f, #22c55e);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -368,7 +374,7 @@
     }
 
     .btn-reconnect {
-      background: linear-gradient(135deg, #22c55e, #16a34a);
+      background: linear-gradient(135deg, #0c831f, #096317);
       color: #ffffff;
       border: none;
       padding: 13px 32px;
@@ -377,7 +383,12 @@
       font-weight: 700;
       cursor: pointer;
       margin-top: 10px;
-      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+      box-shadow: 0 6px 20px rgba(12, 131, 31, 0.45);
+      transition: all 0.2s ease;
+    }
+
+    .btn-reconnect:hover {
+      background: linear-gradient(135deg, #0f9f26, #0c831f);
     }
   </style>
 </head>
@@ -440,7 +451,7 @@
         </svg>
       </button>
 
-      <!-- GREEN Cut Button -->
+      <!-- BLINKIT DARK GREEN Action Button -->
       <button class="btn-cut" id="callCutBtn" title="End Call">
         <svg viewBox="0 0 24 24">
           <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.44-5.15-3.75-6.59-6.59l1.97-1.57c.28-.28.37-.68.25-1.02A11.36 11.36 0 0 1 8.5 4.31c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/>
