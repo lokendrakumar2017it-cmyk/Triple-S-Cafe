@@ -25,7 +25,12 @@
       --text-muted: #64748b;
       --border-subtle: #e2e8f0;
       --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
-      --float-shadow: 0 20px 35px -10px rgba(224, 11, 65, 0.35);
+      --float-shadow: 0 20px 35px -10px rgba(12, 131, 31, 0.4);
+      
+      /* Blinkit Dark Green Theme */
+      --blinkit-green: #0c831f;
+      --blinkit-green-dark: #096818;
+      --blinkit-gradient: linear-gradient(135deg, #0c831f 0%, #086918 100%);
     }
 
     * {
@@ -250,8 +255,8 @@
     }
 
     .search-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(255, 56, 92, 0.12);
+      border-color: var(--blinkit-green);
+      box-shadow: 0 0 0 4px rgba(12, 131, 31, 0.12);
     }
 
     /* MENU SECTION */
@@ -390,8 +395,8 @@
       bottom: -12px;
       background: #ffffff;
       border-radius: 10px;
-      border: 1.5px solid #fed7e2;
-      box-shadow: 0 4px 14px rgba(255, 56, 92, 0.15);
+      border: 1.5px solid #dcfce7;
+      box-shadow: 0 4px 14px rgba(12, 131, 31, 0.15);
       display: flex;
       align-items: center;
       overflow: hidden;
@@ -405,7 +410,7 @@
       height: 100%;
       background: #ffffff;
       border: none;
-      color: var(--primary);
+      color: var(--blinkit-green);
       font-weight: 800;
       font-size: 14px;
       cursor: pointer;
@@ -416,7 +421,7 @@
     .stepper-btn {
       background: transparent;
       border: none;
-      color: var(--primary);
+      color: var(--blinkit-green);
       font-size: 18px;
       font-weight: 800;
       width: 30px;
@@ -534,7 +539,7 @@
       line-height: 1.6;
     }
 
-    /* FLOATING BOTTOM CART BAR */
+    /* FLOATING BOTTOM CART BAR - BLINKIT DARK GREEN */
     .cart-float-bar {
       position: fixed;
       bottom: 14px;
@@ -542,7 +547,7 @@
       right: 14px;
       max-width: 652px;
       margin: 0 auto;
-      background: var(--primary-gradient);
+      background: var(--blinkit-green);
       color: #ffffff;
       border-radius: 18px;
       padding: 14px 20px;
@@ -552,11 +557,17 @@
       box-shadow: var(--float-shadow);
       z-index: 99;
       cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .cart-float-bar:active {
+      transform: scale(0.99);
     }
 
     .cart-lead-text b {
       font-size: 16px;
       font-weight: 800;
+      letter-spacing: 0.3px;
     }
 
     .cart-lead-text p {
@@ -565,12 +576,15 @@
     }
 
     .cart-cta-chip {
-      background: rgba(255, 255, 255, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 9px 16px;
       border-radius: 12px;
       font-size: 14px;
       font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     /* CHECKOUT MODAL */
@@ -693,7 +707,7 @@
     }
 
     .input-field input:focus, .input-field textarea:focus, .input-field select:focus {
-      border-color: var(--primary);
+      border-color: var(--blinkit-green);
     }
 
     .input-hint-error {
@@ -704,9 +718,10 @@
       display: none;
     }
 
+    /* Checkout Confirm Button in Blinkit Green */
     .btn-submit-order {
       width: 100%;
-      background: var(--primary-gradient);
+      background: var(--blinkit-green);
       color: #ffffff;
       border: none;
       padding: 16px;
@@ -714,8 +729,12 @@
       font-size: 16px;
       font-weight: 800;
       cursor: pointer;
-      box-shadow: var(--float-shadow);
-      transition: transform 0.15s, opacity 0.2s;
+      box-shadow: 0 10px 25px -5px rgba(12, 131, 31, 0.4);
+      transition: transform 0.15s, opacity 0.2s, background-color 0.2s;
+    }
+
+    .btn-submit-order:hover:not(:disabled) {
+      background: var(--blinkit-green-dark);
     }
 
     .btn-submit-order:disabled {
@@ -932,7 +951,7 @@
     </div>
   </footer>
 
-  <!-- FLOATING CART BAR -->
+  <!-- FLOATING CART BAR (BLINKIT STYLE DARK GREEN) -->
   <aside class="cart-float-bar" id="cartFloatBar" style="display: none;" onclick="openCheckoutModal()">
     <div class="cart-lead-text">
       <b id="cartLeadTotal">0 ITEMS | ₹0</b>
@@ -1030,7 +1049,7 @@
         </div>
         <div class="meta-line">
           <span>Total Amount:</span>
-          <b id="popupTotalAmount" style="color: var(--primary);">₹0</b>
+          <b id="popupTotalAmount" style="color: var(--blinkit-green);">₹0</b>
         </div>
         <div class="meta-line">
           <span>Delivery Time:</span>
@@ -1237,7 +1256,7 @@
 
         if (bill < MINIMUM_ORDER_VALUE) {
           const diff = MINIMUM_ORDER_VALUE - bill;
-          document.getElementById('cartLeadSubtitle').innerText = `⚠️ Add ₹${diff} more to reach min order (₹${MINIMUM_ORDER_VALUE})`;
+          document.getElementById('cartLeadSubtitle').innerText = `⚠️️ Add ₹${diff} more to reach min order (₹${MINIMUM_ORDER_VALUE})`;
           document.getElementById('cartCtaBtn').innerText = `Add ₹${diff} ➔`;
         } else {
           document.getElementById('cartLeadSubtitle').innerText = `Free delivery within 1 km • Tap to Checkout`;
@@ -1320,7 +1339,6 @@
     /* Live Phone Validation check */
     function validatePhoneLive() {
       const phoneInput = document.getElementById('custPhone');
-      // allow only digits
       phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
       const val = phoneInput.value;
       const errorHint = document.getElementById('phoneErrorHint');
