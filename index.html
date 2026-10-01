@@ -1,1387 +1,667 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Triple S Cafe | Premium Fast Food & Bites</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ishanvi Video Chat</title>
   
-  <!-- Premium Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-  
-  <style>
-    :root {
-      --primary: #ff385c;
-      --primary-gradient: linear-gradient(135deg, #ff385c 0%, #e00b41 100%);
-      --accent-gold: #ffb703;
-      --gold-gradient: linear-gradient(135deg, #ffd166 0%, #ffb703 100%);
-      --dark-hero: #0f172a;
-      --veg-green: #00875a;
-      --drink-blue: #0284c7;
-      --surface: #ffffff;
-      --bg-page: #f8fafc;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border-subtle: #e2e8f0;
-      --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
-      --float-shadow: 0 20px 35px -10px rgba(224, 11, 65, 0.35);
-    }
+  <!-- PeerJS & Firebase SDKs -->
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
+  <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
-      background-color: var(--bg-page);
-      color: var(--text-main);
-      padding-bottom: 95px;
-    }
-
-    /* HERO BANNER */
-    .hero-banner {
-      background: linear-gradient(180deg, #090d16 0%, #111827 70%, #1e293b 100%);
-      position: relative;
+    body, html {
+      width: 100%;
+      height: 100%;
+      background: #060913;
       overflow: hidden;
-      padding: 38px 18px 30px;
-      color: #ffffff;
-      text-align: center;
-      border-bottom-left-radius: 28px;
-      border-bottom-right-radius: 28px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      color: #fff;
     }
 
-    .hero-banner::before {
-      content: "";
-      position: absolute;
-      top: 15%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 240px;
-      height: 240px;
-      background: radial-gradient(circle, rgba(255, 183, 3, 0.28) 0%, rgba(255, 56, 92, 0.15) 50%, transparent 75%);
-      filter: blur(28px);
-      pointer-events: none;
-    }
-
-    .brand-hero-content {
+    .video-call-container {
       position: relative;
-      z-index: 2;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, #0f172a 0%, #060913 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* Radar Pulse Animation */
+    .radar-box {
+      position: absolute;
       display: flex;
       flex-direction: column;
       align-items: center;
-      max-width: 600px;
-      margin: 0 auto;
+      justify-content: center;
+      z-index: 5;
+      pointer-events: none;
     }
 
-    .logo-frame {
-      width: 104px;
-      height: 104px;
-      border-radius: 50%;
-      padding: 4px;
-      background: var(--gold-gradient);
-      box-shadow: 0 10px 30px rgba(255, 183, 3, 0.35), 0 0 0 6px rgba(255, 255, 255, 0.1);
-      margin-bottom: 12px;
+    .radar-circle {
+      position: relative;
+      width: 120px;
+      height: 120px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.3s ease;
     }
 
-    .logo-frame:hover {
-      transform: scale(1.05);
-    }
-
-    .brand-logo-img {
+    .radar-wave {
+      position: absolute;
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      object-fit: cover;
-      background: #ffffff;
-      border: 2px solid #ffffff;
+      border: 2px solid rgba(34, 197, 94, 0.4);
+      animation: ripple 2s cubic-bezier(0.1, 0.2, 0.3, 1) infinite;
     }
 
-    .brand-name {
-      font-family: 'Outfit', sans-serif;
-      font-size: 34px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, #ffffff 30%, #ffd166 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 1.15;
-      margin-bottom: 6px;
+    .radar-wave:nth-child(2) {
+      animation-delay: 0.6s;
     }
 
-    .brand-subtext {
-      font-size: 13px;
+    .radar-wave:nth-child(3) {
+      animation-delay: 1.2s;
+    }
+
+    .radar-center-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10b981, #059669);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(34, 197, 94, 0.6);
+      z-index: 2;
+    }
+
+    .radar-center-icon svg {
+      width: 28px;
+      height: 28px;
+      fill: #fff;
+    }
+
+    .radar-text {
+      margin-top: 20px;
+      font-size: 14px;
       font-weight: 600;
       color: #94a3b8;
-      display: flex;
-      align-items: center;
-      gap: 6px;
       letter-spacing: 0.5px;
-      margin-bottom: 14px;
+      animation: textPulse 1.8s ease-in-out infinite;
     }
 
-    .live-pulse {
-      width: 8px;
-      height: 8px;
-      background: #22c55e;
-      border-radius: 50%;
-      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
-      display: inline-block;
+    @keyframes ripple {
+      0% { transform: scale(0.6); opacity: 1; }
+      100% { transform: scale(2.4); opacity: 0; }
     }
 
-    /* CAUTION / MINIMUM ORDER NOTICE BADGE */
-    .min-order-caution {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 183, 3, 0.15);
-      border: 1.5px solid rgba(255, 183, 3, 0.6);
-      color: #ffd166;
-      padding: 7px 16px;
-      border-radius: 24px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.2px;
-      box-shadow: 0 4px 14px rgba(255, 183, 3, 0.15);
-      backdrop-filter: blur(4px);
+    @keyframes textPulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
     }
 
-    /* STORE STATS HIGHLIGHTS */
-    .store-highlights-wrapper {
-      max-width: 680px;
-      margin: -22px auto 0;
-      padding: 0 16px;
-      position: relative;
-      z-index: 10;
+    /* 1. Fullscreen Stranger Video */
+    #remoteVideo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #000;
+      z-index: 2;
     }
 
-    .store-highlights {
-      background: #ffffff;
+    /* 2. Floating User Video Frame */
+    #localVideo {
+      position: absolute;
+      top: 80px;
+      right: 18px;
+      width: 110px;
+      height: 155px;
       border-radius: 18px;
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--card-shadow);
+      object-fit: cover;
+      background: #0f172a;
+      border: 2px solid rgba(56, 189, 248, 0.7);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(56, 189, 248, 0.25);
+      z-index: 20;
+      transform: scaleX(-1);
     }
 
-    .highlight-pill {
+    /* Brand Header */
+    .brand-header {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      right: 14px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 23, 42, 0.65);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      z-index: 25;
+    }
+
+    .logo-box {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .pill-icon {
-      width: 38px;
-      height: 38px;
+    .logo-icon {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #0ea5e9, #3b82f6);
       border-radius: 10px;
-      background: #f8fafc;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      border: 1px solid #edf2f7;
+      box-shadow: 0 3px 12px rgba(14, 165, 233, 0.45);
     }
 
-    .pill-meta span {
-      display: block;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-    }
-
-    .pill-meta b {
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--text-main);
-    }
-
-    .stat-divider {
-      width: 1px;
-      height: 32px;
-      background: #e2e8f0;
-    }
-
-    /* SEARCH SECTION */
-    .search-section {
-      max-width: 680px;
-      margin: 20px auto 0;
-      padding: 0 16px;
-    }
-
-    .search-box-inner {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 16px;
-      font-size: 18px;
-      opacity: 0.6;
-      pointer-events: none;
-    }
-
-    .search-input {
-      width: 100%;
-      background: #ffffff;
-      border: 1.5px solid var(--border-subtle);
-      padding: 14px 16px 14px 46px;
-      border-radius: 14px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-main);
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
-      outline: none;
-      transition: all 0.2s ease;
-    }
-
-    .search-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(255, 56, 92, 0.12);
-    }
-
-    /* MENU SECTION */
-    .menu-wrap {
-      max-width: 680px;
-      margin: 22px auto 0;
-      padding: 0 16px;
-    }
-
-    .menu-header-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 14px;
-    }
-
-    .menu-header-bar h2 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--text-main);
-      letter-spacing: -0.3px;
-    }
-
-    .item-counter {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-muted);
-      background: #f1f5f9;
-      padding: 4px 10px;
-      border-radius: 20px;
-    }
-
-    .food-card {
-      background: var(--surface);
-      border-radius: 20px;
-      padding: 18px;
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--card-shadow);
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-
-    .food-card:hover {
-      transform: translateY(-2px);
-      border-color: #cbd5e1;
-    }
-
-    .food-info {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .badge-icon {
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 8px;
-    }
-
-    .veg-dot-badge {
-      border: 2px solid var(--veg-green);
-    }
-    .veg-dot-badge::after {
-      content: "";
-      width: 8px;
-      height: 8px;
-      background: var(--veg-green);
-      border-radius: 50%;
-    }
-
-    .drink-badge {
-      border: 2px solid var(--drink-blue);
-    }
-    .drink-badge::after {
-      content: "";
-      width: 8px;
-      height: 8px;
-      background: var(--drink-blue);
-      border-radius: 2px;
-    }
-
-    .dish-title {
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--text-main);
-      margin-bottom: 4px;
-      line-height: 1.25;
-    }
-
-    .dish-price {
-      font-size: 16px;
-      font-weight: 900;
-      color: var(--dark-hero);
-      margin-bottom: 6px;
-    }
-
-    .dish-description {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.45;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .dish-media {
-      width: 120px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .dish-img {
-      width: 120px;
-      height: 110px;
-      border-radius: 16px;
-      object-fit: cover;
-      background: #e2e8f0;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    }
-
-    .stepper-btn-group {
-      position: absolute;
-      bottom: -12px;
-      background: #ffffff;
-      border-radius: 10px;
-      border: 1.5px solid #fed7e2;
-      box-shadow: 0 4px 14px rgba(255, 56, 92, 0.15);
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-      min-width: 95px;
-      height: 36px;
-      justify-content: space-between;
-    }
-
-    .btn-add-initial {
-      width: 100%;
-      height: 100%;
-      background: #ffffff;
-      border: none;
-      color: var(--primary);
-      font-weight: 800;
-      font-size: 14px;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .stepper-btn {
-      background: transparent;
-      border: none;
-      color: var(--primary);
-      font-size: 18px;
-      font-weight: 800;
-      width: 30px;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .stepper-val {
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--text-main);
-      min-width: 20px;
-      text-align: center;
-    }
-
-    /* FOOTER */
-    footer {
-      background: #0f172a;
-      color: #94a3b8;
-      margin-top: 40px;
-      padding: 40px 20px 30px;
-      border-top-left-radius: 28px;
-      border-top-right-radius: 28px;
-      text-align: center;
-    }
-
-    .footer-content {
-      max-width: 600px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .footer-brand {
-      font-family: 'Outfit', sans-serif;
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      color: #ffffff;
-    }
-
-    .owner-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-size: 13.5px;
-      color: #e2e8f0;
-      font-weight: 600;
-    }
-
-    .owner-badge b {
-      color: var(--accent-gold);
-      font-weight: 800;
-    }
-
-    .social-links {
-      display: flex;
-      gap: 14px;
-      margin-top: 4px;
-    }
-
-    .social-icon-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #1e293b;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.25s ease;
-      text-decoration: none;
-    }
-
-    .social-icon-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .social-icon-btn.instagram:hover {
-      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
-      border-color: transparent;
-    }
-
-    .social-icon-btn.facebook:hover {
-      background: #1877f2;
-      border-color: transparent;
-    }
-
-    .social-icon-btn svg {
-      width: 22px;
-      height: 22px;
+    .logo-icon svg {
+      width: 19px;
+      height: 19px;
       fill: #ffffff;
     }
 
-    .footer-divider {
-      width: 100%;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.1);
-      margin: 8px 0;
-    }
-
-    .footer-bottom-text {
-      font-size: 12px;
-      color: #64748b;
-      line-height: 1.6;
-    }
-
-    /* FLOATING BOTTOM CART BAR */
-    .cart-float-bar {
-      position: fixed;
-      bottom: 14px;
-      left: 14px;
-      right: 14px;
-      max-width: 652px;
-      margin: 0 auto;
-      background: var(--primary-gradient);
-      color: #ffffff;
-      border-radius: 18px;
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: var(--float-shadow);
-      z-index: 99;
-      cursor: pointer;
-    }
-
-    .cart-lead-text b {
+    .brand-title {
       font-size: 16px;
       font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.3px;
+      text-transform: capitalize;
     }
 
-    .cart-lead-text p {
-      font-size: 12px;
-      opacity: 0.95;
+    .brand-title span {
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .cart-cta-chip {
-      background: rgba(255, 255, 255, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 9px 16px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 800;
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #34d399;
+      background: rgba(52, 211, 153, 0.12);
+      padding: 5px 11px;
+      border-radius: 20px;
+      border: 1px solid rgba(52, 211, 153, 0.3);
     }
 
-    /* CHECKOUT MODAL */
-    .checkout-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 8px #34d399;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Floating Dock Controls */
+    .call-controls {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      gap: 12px;
       background: rgba(15, 23, 42, 0.7);
-      backdrop-filter: blur(4px);
-      z-index: 1000;
-      align-items: flex-end;
-      justify-content: center;
+      padding: 8px 16px;
+      border-radius: 50px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
     }
 
-    .checkout-sheet {
-      background: #ffffff;
-      width: 100%;
-      max-width: 550px;
-      border-top-left-radius: 26px;
-      border-top-right-radius: 26px;
-      padding: 24px 20px 32px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .sheet-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .sheet-title-row h3 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 20px;
-      font-weight: 800;
-    }
-
-    .sheet-close-btn {
-      background: #f1f5f9;
-      border: none;
-      width: 34px;
-      height: 34px;
+    .control-btn {
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    /* Validation Prompt Alert Inside Modal */
-    .modal-min-order-alert {
-      background: #fef2f2;
-      border: 1.5px solid #fecaca;
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 13px;
-      color: #b91c1c;
-      font-weight: 700;
-      margin-bottom: 14px;
-      display: none;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .invoice-card {
-      background: #f8fafc;
-      border-radius: 14px;
-      padding: 14px 16px;
-      margin-bottom: 18px;
-      border: 1px solid var(--border-subtle);
-      font-size: 13.5px;
-    }
-
-    .invoice-item-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      color: #475569;
-      font-weight: 600;
-    }
-
-    .invoice-item-row.delivery-row {
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .invoice-item-row.grand-total {
-      border-top: 1px dashed #cbd5e1;
-      padding-top: 10px;
-      margin-top: 10px;
-      font-size: 16px;
-      font-weight: 900;
-      color: var(--text-main);
-    }
-
-    .input-field {
-      margin-bottom: 14px;
-    }
-
-    .input-field label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: #475569;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-    }
-
-    .input-field input, .input-field textarea, .input-field select {
-      width: 100%;
-      padding: 13px 15px;
-      border: 1.5px solid var(--border-subtle);
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      outline: none;
-      background: #ffffff;
-      transition: border-color 0.15s;
-    }
-
-    .input-field input:focus, .input-field textarea:focus, .input-field select:focus {
-      border-color: var(--primary);
-    }
-
-    .input-hint-error {
-      color: #dc2626;
-      font-size: 11.5px;
-      font-weight: 700;
-      margin-top: 4px;
-      display: none;
-    }
-
-    .btn-submit-order {
-      width: 100%;
-      background: var(--primary-gradient);
-      color: #ffffff;
       border: none;
-      padding: 16px;
-      border-radius: 14px;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: var(--float-shadow);
-      transition: transform 0.15s, opacity 0.2s;
-    }
-
-    .btn-submit-order:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-      box-shadow: none;
-      opacity: 0.8;
-    }
-
-    .btn-submit-order:active:not(:disabled) {
-      transform: scale(0.98);
-    }
-
-    /* ORDER SUCCESS POPUP CARD */
-    .success-popup-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(6px);
-      z-index: 2000;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .success-card {
-      background: #ffffff;
-      width: 100%;
-      max-width: 420px;
-      border-radius: 24px;
-      padding: 32px 24px;
+    .control-btn:active {
+      transform: scale(0.9);
+    }
+
+    .control-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #ffffff;
+    }
+
+    .control-btn.off {
+      background: #ef4444;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+    }
+
+    /* UPDATED: Green Cut/Cart Action Button */
+    .btn-cut {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(34, 197, 94, 0.5);
+      transition: transform 0.2s ease;
+    }
+
+    .btn-cut:active {
+      transform: scale(0.9);
+    }
+
+    .btn-cut svg {
+      width: 22px;
+      height: 22px;
+      fill: #ffffff;
+      transform: rotate(135deg);
+    }
+
+    /* Thank You Screen Card with Green Accent */
+    .thankyou-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #060913;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      animation: popSuccess 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 24px;
+      z-index: 100;
     }
 
-    @keyframes popSuccess {
-      from { transform: scale(0.85); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+    .thankyou-card {
+      background: rgba(15, 23, 42, 0.85);
+      padding: 40px 24px;
+      border-radius: 28px;
+      max-width: 360px;
+      width: 100%;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7), 0 0 25px rgba(34, 197, 94, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
     }
 
-    .success-icon-wrap {
-      width: 74px;
-      height: 74px;
-      background: #dcfce7;
-      color: #16a34a;
+    .heart-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(34, 197, 94, 0.15);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 38px;
-      margin: 0 auto 16px;
-      box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
     }
 
-    .success-card h2 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 24px;
-      font-weight: 900;
-      color: #0f172a;
-      margin-bottom: 6px;
+    .heart-icon svg {
+      width: 32px;
+      height: 32px;
+      fill: #22c55e;
     }
 
-    .success-card p {
-      font-size: 13.5px;
-      color: #64748b;
+    .thankyou-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+
+    .thankyou-title span {
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .thankyou-desc {
+      font-size: 14px;
+      color: #94a3b8;
       line-height: 1.5;
-      margin-bottom: 20px;
     }
 
-    .order-meta-box {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 14px 16px;
-      text-align: left;
-      font-size: 13px;
-      margin-bottom: 22px;
-    }
-
-    .meta-line {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 6px;
-      color: #475569;
-    }
-
-    .meta-line:last-child {
-      margin-bottom: 0;
-    }
-
-    .meta-line b {
-      color: #0f172a;
-    }
-
-    .btn-done {
-      width: 100%;
-      background: #0f172a;
+    .btn-reconnect {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
       color: #ffffff;
       border: none;
-      padding: 14px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 800;
+      padding: 13px 32px;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 700;
       cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .btn-done:hover {
-      background: #1e293b;
+      margin-top: 10px;
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
     }
   </style>
 </head>
 <body>
 
-  <!-- HERO SECTION -->
-  <section class="hero-banner">
-    <div class="brand-hero-content">
-      <div class="logo-frame">
-        <img src="logo.png" alt="Triple S Cafe" class="brand-logo-img"
-             onerror="if(!this.triedJpg){ this.triedJpg=true; this.src='logo.jpg'; } else { this.style.display='none'; }">
-      </div>
-      <h1 class="brand-name">Triple S Cafe</h1>
-      <div class="brand-subtext">
-        <span class="live-pulse"></span>
-        <span>Hot & Fresh Fast Food • Doorstep Delivery</span>
-      </div>
-
-      <!-- Attention Grabbing Minimum Order Caution Badge -->
-      <div class="min-order-caution">
-        <span>⚠️</span>
-        <span>Note: Minimum order value is ₹200 for delivery</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- STORE STATS -->
-  <div class="store-highlights-wrapper">
-    <div class="store-highlights">
-      <div class="highlight-pill">
-        <div class="pill-icon">⏱️</div>
-        <div class="pill-meta">
-          <span>Delivery</span>
-          <b>20–30 Mins</b>
-        </div>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="highlight-pill">
-        <div class="pill-icon">⭐</div>
-        <div class="pill-meta">
-          <span>Rating</span>
-          <b>4.8 (250+)</b>
-        </div>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="highlight-pill">
-        <div class="pill-icon">🛵</div>
-        <div class="pill-meta">
-          <span>Charges</span>
-          <b>Within 1 km Free</b>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SEARCH -->
-  <div class="search-section">
-    <div class="search-box-inner">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" class="search-input" placeholder="Search for Burger, Patties, Cold Drink, Maggi..." oninput="handleSearch()">
-    </div>
-  </div>
-
-  <!-- MENU LIST -->
-  <main class="menu-wrap">
-    <div class="menu-header-bar">
-      <h2>Chef's Special Menu</h2>
-      <span class="item-counter" id="itemCountDisplay">10 Items</span>
-    </div>
-    <div id="foodListContainer"></div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-content">
-      <div class="footer-brand">Triple S Cafe</div>
-      
-      <div class="owner-badge">
-        <span>👨‍🍳 Owned & Managed by:</span>
-        <b>Shubham</b>
-      </div>
-
-      <div class="social-links">
-        <a href="https://instagram.com" target="_blank" class="social-icon-btn instagram" title="Follow us on Instagram">
+  <div class="video-call-container" id="videoContainer">
+    <!-- Top Header -->
+    <div class="brand-header">
+      <div class="logo-box">
+        <div class="logo-icon">
           <svg viewBox="0 0 24 24">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
           </svg>
-        </a>
+        </div>
+        <div class="brand-title">ishanvi <span>video chat</span></div>
+      </div>
+      <div class="live-badge">
+        <span class="live-dot"></span>
+        <span>LIVE</span>
+      </div>
+    </div>
 
-        <a href="https://facebook.com" target="_blank" class="social-icon-btn facebook" title="Find us on Facebook">
+    <!-- Waiting Animation Screen -->
+    <div class="radar-box" id="radarBox">
+      <div class="radar-circle">
+        <div class="radar-wave"></div>
+        <div class="radar-wave"></div>
+        <div class="radar-wave"></div>
+        <div class="radar-center-icon">
           <svg viewBox="0 0 24 24">
-            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.44-5.15-3.75-6.59-6.59l1.97-1.57c.28-.28.37-.68.25-1.02A11.36 11.36 0 0 1 8.5 4.31c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/>
           </svg>
-        </a>
+        </div>
       </div>
-
-      <div class="footer-divider"></div>
-
-      <div class="footer-bottom-text">
-        <p>© 2026 <b>Triple S Cafe</b>. All Rights Reserved.</p>
-        <p style="margin-top: 4px; opacity: 0.7;">Made with 100% fresh ingredients & hygiene standards.</p>
-      </div>
+      <div class="radar-text">Waiting for call pickup</div>
     </div>
-  </footer>
 
-  <!-- FLOATING CART BAR -->
-  <aside class="cart-float-bar" id="cartFloatBar" style="display: none;" onclick="openCheckoutModal()">
-    <div class="cart-lead-text">
-      <b id="cartLeadTotal">0 ITEMS | ₹0</b>
-      <p id="cartLeadSubtitle">Delivery calculated by distance • Tap to Review</p>
-    </div>
-    <div class="cart-cta-chip" id="cartCtaBtn">
-      View Cart ➔
-    </div>
-  </aside>
+    <!-- Videos -->
+    <video id="remoteVideo" autoplay playsinline></video>
+    <video id="localVideo" autoplay playsinline muted></video>
 
-  <!-- CHECKOUT MODAL -->
-  <div class="checkout-backdrop" id="checkoutBackdrop">
-    <div class="checkout-sheet">
-      <div class="sheet-title-row">
-        <h3>Order Invoice</h3>
-        <button class="sheet-close-btn" onclick="closeCheckoutModal()">✕</button>
-      </div>
+    <!-- Controls -->
+    <div class="call-controls">
+      <button class="control-btn" id="micBtn" title="Mute/Unmute Mic">
+        <svg id="micIcon" viewBox="0 0 24 24">
+          <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+          <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+        </svg>
+      </button>
 
-      <!-- Minimum order warning prompt in checkout modal -->
-      <div class="modal-min-order-alert" id="modalMinOrderAlert">
-        <span>⚠️</span>
-        <span id="modalMinOrderAlertText">Minimum order value is ₹200. Please add more items.</span>
-      </div>
+      <button class="control-btn" id="camBtn" title="Camera On/Off">
+        <svg id="camIcon" viewBox="0 0 24 24">
+          <path d="M15 8v8H5V8h10m1-2H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4V7c0-.55-.45-1-1-1z"/>
+        </svg>
+      </button>
 
-      <div class="invoice-card">
-        <div id="invoiceItemsListing"></div>
-        <div class="invoice-item-row delivery-row" style="margin-top: 8px;">
-          <span>Delivery Charge (<span id="deliveryDistanceLabel">Within 1 km</span>)</span>
-          <span id="deliveryChargeText" style="color: var(--veg-green);">FREE</span>
-        </div>
-        <div class="invoice-item-row grand-total">
-          <span>Grand Total</span>
-          <span id="grandTotalText">₹0</span>
-        </div>
-      </div>
+      <button class="control-btn" id="flipBtn" title="Switch Camera">
+        <svg viewBox="0 0 24 24">
+          <path d="M9.01 14H2v2h7.01v3L13 15l-3.99-4v3zm5.98-1v-3H22V8h-7.01V5L11 9l3.99 4z"/>
+        </svg>
+      </button>
 
-      <form id="orderForm" onsubmit="handleOrderSubmit(event)">
-        <div class="input-field">
-          <label>Customer Full Name</label>
-          <input type="text" id="custName" required placeholder="Enter your full name">
-        </div>
-
-        <div class="input-field">
-          <label>Phone Number (10 Digits)</label>
-          <input type="tel" id="custPhone" maxlength="10" required placeholder="e.g. 9876543210" oninput="validatePhoneLive()">
-          <div class="input-hint-error" id="phoneErrorHint">Please enter a valid 10-digit mobile number (starting with 6, 7, 8, or 9).</div>
-        </div>
-
-        <!-- KM SELECTION -->
-        <div class="input-field">
-          <label>Select Delivery Distance from Cafe</label>
-          <select id="distanceSelect" onchange="updateDeliveryCalculation()">
-            <option value="0" data-label="Within 1 km">Within 1 km (FREE Delivery)</option>
-            <option value="15" data-label="1 to 2 km">1 to 2 km (+₹15 Delivery Charge)</option>
-            <option value="25" data-label="2 to 3 km">2 to 3 km (+₹25 Delivery Charge)</option>
-            <option value="35" data-label="3 to 4 km">3 to 4 km (+₹35 Delivery Charge)</option>
-            <option value="45" data-label="4 to 5 km">4 to 5 km (+₹45 Delivery Charge)</option>
-          </select>
-        </div>
-
-        <div class="input-field">
-          <label>Complete Delivery Address</label>
-          <textarea id="custAddress" rows="2" required placeholder="House / Flat No., Street, Landmark"></textarea>
-        </div>
-
-        <div class="input-field">
-          <label>Payment Mode</label>
-          <input type="text" value="Cash / UPI on Delivery" readonly style="background: #f1f5f9; color: #475569;">
-        </div>
-
-        <button type="submit" class="btn-submit-order" id="orderSubmitBtn">Confirm & Place Order</button>
-      </form>
+      <!-- GREEN Cut Button -->
+      <button class="btn-cut" id="callCutBtn" title="End Call">
+        <svg viewBox="0 0 24 24">
+          <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.44-5.15-3.75-6.59-6.59l1.97-1.57c.28-.28.37-.68.25-1.02A11.36 11.36 0 0 1 8.5 4.31c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/>
+        </svg>
+      </button>
     </div>
   </div>
 
-  <!-- ORDER SUCCESS POPUP CARD -->
-  <div class="success-popup-backdrop" id="successPopup">
-    <div class="success-card">
-      <div class="success-icon-wrap">✓</div>
-      <h2>Order Placed!</h2>
-      <p>Thank you! Your order has been placed successfully. <b>Triple S Cafe</b> is preparing your fresh meal.</p>
-      
-      <div class="order-meta-box">
-        <div class="meta-line">
-          <span>Order ID:</span>
-          <b id="popupOrderId">#TSC-0000</b>
-        </div>
-        <div class="meta-line">
-          <span>Customer:</span>
-          <b id="popupCustName">Guest</b>
-        </div>
-        <div class="meta-line">
-          <span>Phone:</span>
-          <b id="popupCustPhone">0000000000</b>
-        </div>
-        <div class="meta-line">
-          <span>Total Amount:</span>
-          <b id="popupTotalAmount" style="color: var(--primary);">₹0</b>
-        </div>
-        <div class="meta-line">
-          <span>Delivery Time:</span>
-          <b>20–30 Minutes</b>
-        </div>
+  <!-- Thank You Screen -->
+  <div class="thankyou-screen" id="thankyouScreen">
+    <div class="thankyou-card">
+      <div class="heart-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
       </div>
-
-      <button class="btn-done" onclick="closeSuccessPopup()">Awesome, Got it!</button>
+      <div class="thankyou-title">Thank you for using <br><span>ishanvi video chat</span></div>
+      <div class="thankyou-desc">Call disconnected successfully. We hope you enjoyed your conversation!</div>
+      <button class="btn-reconnect" onclick="location.reload()">Start New Call</button>
     </div>
   </div>
 
   <script>
-    const MINIMUM_ORDER_VALUE = 200;
+    const firebaseConfig = {
+      apiKey: "AIzaSyBju6Q8VGk8iGz0yfnKw07-6RHKZfQt78E",
+      authDomain: "randomtalk-9cd6c.firebaseapp.com",
+      databaseURL: "https://randomtalk-9cd6c-default-rtdb.firebaseio.com",
+      projectId: "randomtalk-9cd6c",
+      storageBucket: "randomtalk-9cd6c.firebasestorage.app",
+      messagingSenderId: "104855361284",
+      appId: "1:104855361284:web:8f04006b2a1eb7a43ca251"
+    };
 
-    const foodDatabase = [
-      { 
-        id: 1, 
-        name: "Patties", 
-        type: "veg",
-        desc: "Golden flaky baked puff pastry packed with aromatic spiced potato stuffing.", 
-        price: 30, 
-        image: "patties.jpg",
-        fallback: "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=500&auto=format&fit=crop&q=80"
-      },
-      { 
-        id: 2, 
-        name: "Burger", 
-        type: "veg",
-        desc: "Crispy vegetable patty layered with crisp iceberg, onion rings & creamy signature sauce.", 
-        price: 40, 
-        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=80" 
-      },
-      { 
-        id: 3, 
-        name: "Stuffed Patties", 
-        type: "veg",
-        desc: "Special oven-crisped puff pastry loaded with hearty double fillings & cottage cheese seasoning.", 
-        price: 40, 
-        image: "patties.jpg",
-        fallback: "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=500&auto=format&fit=crop&q=80"
-      },
-      { 
-        id: 4, 
-        name: "Chowmein (Half Plate)", 
-        type: "veg",
-        desc: "Street-style wok-tossed spicy noodles stir-fried with shred cabbage, capsicum & dark soya.", 
-        price: 30, 
-        image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&auto=format&fit=crop&q=80" 
-      },
-      { 
-        id: 5, 
-        name: "Chowmein (Full Plate)", 
-        type: "veg",
-        desc: "Generous bowl of smokey hakka-style noodles tossed with garden fresh veggies & garlic.", 
-        price: 70, 
-        image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&auto=format&fit=crop&q=80" 
-      },
-      { 
-        id: 6, 
-        name: "Chilli Potato", 
-        type: "veg",
-        desc: "Crisp potato fingers glazed in sticky honey-chilli gravy, tossed with toasted sesame seeds.", 
-        price: 70, 
-        image: "chilli-potato.jpg",
-        fallback: "https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?w=500&auto=format&fit=crop&q=80"
-      },
-      { 
-        id: 7, 
-        name: "Maggi", 
-        type: "veg",
-        desc: "Fresh steaming bowl of classic 2-minute masala Maggi cooked with butter & roasted spices.", 
-        price: 50, 
-        image: "https://images.unsplash.com/photo-1612927601601-6638404737ce?w=500&auto=format&fit=crop&q=80" 
-      },
-      { 
-        id: 8, 
-        name: "Cold Drink (250ml)", 
-        type: "drink",
-        desc: "Chilled and refreshing soft drink (Coca-Cola / Thums Up / Sprite). Served ice cold.", 
-        price: 20, 
-        image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=80",
-        fallback: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500&auto=format&fit=crop&q=80"
-      },
-      { 
-        id: 9, 
-        name: "Cold Drink (750ml)", 
-        type: "drink",
-        desc: "Chilled family size bottle (Coca-Cola / Thums Up / Sprite), perfect to share with snacks.", 
-        price: 40, 
-        image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500&auto=format&fit=crop&q=80",
-        fallback: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=80"
-      },
-      { 
-        id: 10, 
-        name: "Sting Energy Drink (250ml)", 
-        type: "drink",
-        desc: "Chilled energizing strawberry flavored Sting drink to boost your energy instant.", 
-        price: 20, 
-        image: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?w=500&auto=format&fit=crop&q=80",
-        fallback: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500&auto=format&fit=crop&q=80"
-      }
-    ];
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.database();
+    const queueRef = db.ref("waiting_queue");
 
-    let userCart = {};
+    const localVideo = document.getElementById("localVideo");
+    const remoteVideo = document.getElementById("remoteVideo");
+    const radarBox = document.getElementById("radarBox");
+    const callCutBtn = document.getElementById("callCutBtn");
+    const micBtn = document.getElementById("micBtn");
+    const camBtn = document.getElementById("camBtn");
+    const flipBtn = document.getElementById("flipBtn");
+    const videoContainer = document.getElementById("videoContainer");
+    const thankyouScreen = document.getElementById("thankyouScreen");
 
-    function renderMenuCatalog(items = foodDatabase) {
-      const targetContainer = document.getElementById('foodListContainer');
-      targetContainer.innerHTML = '';
-      document.getElementById('itemCountDisplay').innerText = `${items.length} Items`;
+    let localStream = null;
+    let peer = null;
+    let myPeerId = null;
+    let currentCall = null;
 
-      if (items.length === 0) {
-        targetContainer.innerHTML = `
-          <div style="text-align:center; padding: 48px 16px; color:#94a3b8;">
-            <p style="font-size: 32px; margin-bottom: 8px;">🍽️</p>
-            <b style="font-size: 16px; color: #475569;">No delicious items match your search.</b>
-          </div>
-        `;
-        return;
-      }
+    let isAudioMuted = false;
+    let isVideoStopped = false;
+    let currentFacingMode = "user";
 
-      items.forEach(dish => {
-        const qty = userCart[dish.id] || 0;
-        
-        let qtyControls = '';
-        if (qty === 0) {
-          qtyControls = `<button class="btn-add-initial" onclick="updateItemCount(${dish.id}, 1)">Add +</button>`;
-        } else {
-          qtyControls = `
-            <button class="stepper-btn" onclick="updateItemCount(${dish.id}, -1)">−</button>
-            <span class="stepper-val">${qty}</span>
-            <button class="stepper-btn" onclick="updateItemCount(${dish.id}, 1)">+</button>
-          `;
+    async function startCamera(facingMode = "user") {
+      try {
+        if (localStream) {
+          localStream.getTracks().forEach(track => track.stop());
         }
 
-        const badgeClass = dish.type === 'drink' ? 'drink-badge' : 'veg-dot-badge';
-        const badgeTitle = dish.type === 'drink' ? 'Cold Beverage' : 'Pure Veg';
+        localStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: facingMode, width: { ideal: 640 }, height: { ideal: 480 } },
+          audio: true
+        });
 
-        targetContainer.innerHTML += `
-          <article class="food-card">
-            <div class="food-info">
-              <div class="badge-icon ${badgeClass}" title="${badgeTitle}"></div>
-              <h3 class="dish-title">${dish.name}</h3>
-              <div class="dish-price">₹${dish.price}</div>
-              <p class="dish-description">${dish.desc}</p>
-            </div>
-            <div class="dish-media">
-              <img src="${dish.image}" alt="${dish.name}" class="dish-img"
-                   onerror="if(!this.triedAlt && '${dish.fallback || ''}'){ this.triedAlt=true; this.src='${dish.fallback}'; } else { this.src='https://placehold.co/200x200?text=' + encodeURIComponent('${dish.name}'); }">
-              <div class="stepper-btn-group">
-                ${qtyControls}
-              </div>
-            </div>
-          </article>
-        `;
+        localVideo.srcObject = localStream;
+        localVideo.style.transform = facingMode === "user" ? "scaleX(-1)" : "scaleX(1)";
+
+        if (isAudioMuted) {
+          localStream.getAudioTracks().forEach(t => t.enabled = false);
+        }
+        if (isVideoStopped) {
+          localStream.getVideoTracks().forEach(t => t.enabled = false);
+          localVideo.style.opacity = "0.2";
+        }
+
+        if (currentCall && currentCall.peerConnection) {
+          const videoTrack = localStream.getVideoTracks()[0];
+          const senders = currentCall.peerConnection.getSenders();
+          const videoSender = senders.find(s => s.track && s.track.kind === 'video');
+          if (videoSender) {
+            videoSender.replaceTrack(videoTrack);
+          }
+        }
+
+        if (!peer) {
+          initPeer();
+        }
+      } catch (err) {
+        alert("Please allow Camera & Microphone permission in browser.");
+      }
+    }
+
+    function initPeer() {
+      peer = new Peer({
+        config: {
+          iceServers: [
+            { urls: 'stun:stun.l.google.com:19302' },
+            { urls: 'stun:stun1.l.google.com:19302' }
+          ]
+        }
       });
 
-      refreshCartBar();
+      peer.on('open', (id) => {
+        myPeerId = id;
+        findMatch();
+      });
+
+      peer.on('call', (call) => {
+        if (!localStream) return;
+        call.answer(localStream);
+        setupCallHandlers(call);
+      });
+
+      peer.on('disconnected', () => {
+        if (!peer.destroyed) peer.reconnect();
+      });
     }
 
-    function updateItemCount(id, delta) {
-      const nextCount = (userCart[id] || 0) + delta;
-      if (nextCount > 0) {
-        userCart[id] = nextCount;
-      } else {
-        delete userCart[id];
-      }
-      renderMenuCatalog(getFilteredList());
-    }
+    function findMatch() {
+      radarBox.style.display = "flex";
+      remoteVideo.srcObject = null;
 
-    function getFilteredList() {
-      const searchWord = document.getElementById('searchInput').value.toLowerCase().trim();
-      if (!searchWord) return foodDatabase;
-      return foodDatabase.filter(item => 
-        item.name.toLowerCase().includes(searchWord) || 
-        item.desc.toLowerCase().includes(searchWord)
-      );
-    }
+      queueRef.once('value', (snapshot) => {
+        const queue = snapshot.val() || {};
+        const availablePeers = Object.keys(queue).filter(id => id !== myPeerId);
 
-    function handleSearch() {
-      renderMenuCatalog(getFilteredList());
-    }
-
-    function getItemsTotal() {
-      let total = 0;
-      for (const id in userCart) {
-        const item = foodDatabase.find(i => i.id == id);
-        total += item.price * userCart[id];
-      }
-      return total;
-    }
-
-    function refreshCartBar() {
-      let count = 0;
-      let bill = getItemsTotal();
-
-      for (const id in userCart) {
-        count += userCart[id];
-      }
-
-      const bar = document.getElementById('cartFloatBar');
-      if (count > 0) {
-        bar.style.display = 'flex';
-        document.getElementById('cartLeadTotal').innerText = `${count} ITEM${count > 1 ? 'S' : ''} | ₹${bill}`;
-
-        if (bill < MINIMUM_ORDER_VALUE) {
-          const diff = MINIMUM_ORDER_VALUE - bill;
-          document.getElementById('cartLeadSubtitle').innerText = `⚠️ Add ₹${diff} more to reach min order (₹${MINIMUM_ORDER_VALUE})`;
-          document.getElementById('cartCtaBtn').innerText = `Add ₹${diff} ➔`;
+        if (availablePeers.length > 0) {
+          const partnerId = availablePeers[0];
+          queueRef.child(partnerId).remove();
+          connectToStranger(partnerId);
         } else {
-          document.getElementById('cartLeadSubtitle').innerText = `Free delivery within 1 km • Tap to Checkout`;
-          document.getElementById('cartCtaBtn').innerText = `View Cart ➔`;
+          queueRef.child(myPeerId).set(true);
+          queueRef.child(myPeerId).onDisconnect().remove();
         }
-      } else {
-        bar.style.display = 'none';
-      }
+      });
     }
 
-    function updateDeliveryCalculation() {
-      const select = document.getElementById('distanceSelect');
-      const deliveryCharge = parseInt(select.value, 10);
-      const selectedOption = select.options[select.selectedIndex];
-      const distanceLabel = selectedOption.getAttribute('data-label');
-
-      document.getElementById('deliveryDistanceLabel').innerText = distanceLabel;
-
-      if (deliveryCharge === 0) {
-        document.getElementById('deliveryChargeText').innerText = "FREE";
-        document.getElementById('deliveryChargeText').style.color = "var(--veg-green)";
-      } else {
-        document.getElementById('deliveryChargeText').innerText = `+₹${deliveryCharge}`;
-        document.getElementById('deliveryChargeText').style.color = "var(--text-main)";
-      }
-
-      const itemsTotal = getItemsTotal();
-      const finalTotal = itemsTotal + deliveryCharge;
-      document.getElementById('grandTotalText').innerText = "₹" + finalTotal;
+    function connectToStranger(strangerId) {
+      if (!localStream) return;
+      const call = peer.call(strangerId, localStream);
+      setupCallHandlers(call);
     }
 
-    function openCheckoutModal() {
-      const itemsTotal = getItemsTotal();
-      const submitBtn = document.getElementById('orderSubmitBtn');
-      const alertBox = document.getElementById('modalMinOrderAlert');
-      const alertText = document.getElementById('modalMinOrderAlertText');
+    function setupCallHandlers(call) {
+      currentCall = call;
 
-      let summaryRows = "";
+      call.on('stream', (stream) => {
+        remoteVideo.srcObject = stream;
+        radarBox.style.display = "none";
+        remoteVideo.play().catch(() => {
+          document.body.addEventListener('click', () => {
+            remoteVideo.play();
+          }, { once: true });
+        });
+      });
 
-      for (const id in userCart) {
-        const item = foodDatabase.find(i => i.id == id);
-        const subtotal = item.price * userCart[id];
-        summaryRows += `
-          <div class="invoice-item-row">
-            <span>${item.name} × ${userCart[id]}</span>
-            <span>₹${subtotal}</span>
-          </div>
-        `;
-      }
+      call.on('close', () => {
+        handleDisconnect();
+      });
 
-      document.getElementById('invoiceItemsListing').innerHTML = summaryRows;
-      document.getElementById('distanceSelect').value = "0";
-      updateDeliveryCalculation();
-
-      // Check ₹200 Minimum Order condition
-      if (itemsTotal < MINIMUM_ORDER_VALUE) {
-        const remaining = MINIMUM_ORDER_VALUE - itemsTotal;
-        alertBox.style.display = 'flex';
-        alertText.innerText = `Minimum order value is ₹${MINIMUM_ORDER_VALUE}. Please add ₹${remaining} more of delicious food to place order.`;
-        submitBtn.disabled = true;
-        submitBtn.innerText = `Add ₹${remaining} More to Order`;
-      } else {
-        alertBox.style.display = 'none';
-        submitBtn.disabled = false;
-        submitBtn.innerText = "Confirm & Place Order";
-      }
-
-      document.getElementById('checkoutBackdrop').style.display = 'flex';
+      call.on('error', () => {
+        handleDisconnect();
+      });
     }
 
-    function closeCheckoutModal() {
-      document.getElementById('checkoutBackdrop').style.display = 'none';
-      document.getElementById('phoneErrorHint').style.display = 'none';
+    function handleDisconnect() {
+      resetSession();
+      findMatch();
     }
 
-    document.getElementById('checkoutBackdrop').addEventListener('click', function(e) {
-      if (e.target === this) closeCheckoutModal();
+    function resetSession() {
+      if (currentCall) currentCall.close();
+      remoteVideo.srcObject = null;
+      radarBox.style.display = "flex";
+      if (myPeerId) queueRef.child(myPeerId).remove();
+    }
+
+    micBtn.addEventListener("click", () => {
+      if (!localStream) return;
+      isAudioMuted = !isAudioMuted;
+      localStream.getAudioTracks().forEach(track => {
+        track.enabled = !isAudioMuted;
+      });
+      micBtn.classList.toggle("off", isAudioMuted);
     });
 
-    /* Live Phone Validation check */
-    function validatePhoneLive() {
-      const phoneInput = document.getElementById('custPhone');
-      // allow only digits
-      phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
-      const val = phoneInput.value;
-      const errorHint = document.getElementById('phoneErrorHint');
+    camBtn.addEventListener("click", () => {
+      if (!localStream) return;
+      isVideoStopped = !isVideoStopped;
+      localStream.getVideoTracks().forEach(track => {
+        track.enabled = !isVideoStopped;
+      });
+      camBtn.classList.toggle("off", isVideoStopped);
+      localVideo.style.opacity = isVideoStopped ? "0.2" : "1";
+    });
 
-      const isValid = /^[6-9]\d{9}$/.test(val);
-      if (val.length === 10 && !isValid) {
-        errorHint.style.display = 'block';
-      } else if (val.length === 10 && isValid) {
-        errorHint.style.display = 'none';
-      } else if (val.length > 0 && val.length < 10) {
-        errorHint.style.display = 'none';
+    flipBtn.addEventListener("click", () => {
+      currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
+      startCamera(currentFacingMode);
+    });
+
+    callCutBtn.addEventListener("click", () => {
+      if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
       }
-      return isValid;
-    }
+      resetSession();
+      if (peer) peer.destroy();
+      videoContainer.style.display = "none";
+      thankyouScreen.style.display = "flex";
+    });
 
-    function handleOrderSubmit(e) {
-      e.preventDefault();
+    window.addEventListener("beforeunload", () => {
+      resetSession();
+    });
 
-      const itemsTotal = getItemsTotal();
-      if (itemsTotal < MINIMUM_ORDER_VALUE) {
-        const remaining = MINIMUM_ORDER_VALUE - itemsTotal;
-        alert(`Minimum order value is ₹${MINIMUM_ORDER_VALUE} for delivery. Please add ₹${remaining} more items.`);
-        return;
-      }
-
-      const phoneInput = document.getElementById('custPhone');
-      const phoneVal = phoneInput.value.trim();
-      const phoneRegex = /^[6-9]\d{9}$/;
-
-      if (!phoneRegex.test(phoneVal)) {
-        document.getElementById('phoneErrorHint').style.display = 'block';
-        phoneInput.focus();
-        return;
-      }
-
-      const customerName = document.getElementById('custName').value.trim();
-      const finalGrandTotal = document.getElementById('grandTotalText').innerText;
-      const randomOrderId = '#TSC-' + Math.floor(1000 + Math.random() * 9000);
-
-      // Populate Success Popup
-      document.getElementById('popupOrderId').innerText = randomOrderId;
-      document.getElementById('popupCustName').innerText = customerName;
-      document.getElementById('popupCustPhone').innerText = phoneVal;
-      document.getElementById('popupTotalAmount').innerText = finalGrandTotal;
-
-      // Close checkout modal & show popup
-      closeCheckoutModal();
-      document.getElementById('successPopup').style.display = 'flex';
-
-      // Reset cart and form
-      userCart = {};
-      document.getElementById('orderForm').reset();
-      renderMenuCatalog();
-    }
-
-    function closeSuccessPopup() {
-      document.getElementById('successPopup').style.display = 'none';
-    }
-
-    // Initial render
-    renderMenuCatalog();
+    startCamera(currentFacingMode);
   </script>
 </body>
 </html>
